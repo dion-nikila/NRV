@@ -104,12 +104,25 @@ const useAnimationLoop = (
   useEffect(() => {
     const track = trackRef.current;
     if (!track) return undefined;
+    let isInView = true;
+    const visibilityObserver =
+      "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            ([entry]) => {
+              isInView = Boolean(entry?.isIntersecting);
+              if (isInView) lastTimestampRef.current = null;
+            },
+            { rootMargin: "120px 0px", threshold: 0.01 },
+          )
+        : null;
+    visibilityObserver?.observe(track);
 
     const reduceMotionNow =
       prefersReducedMotion ||
       window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     if (reduceMotionNow) {
+      visibilityObserver?.disconnect();
       track.style.transform = "translate3d(0, 0, 0)";
       velocityRef.current = 0;
       lastTimestampRef.current = null;
@@ -128,7 +141,7 @@ const useAnimationLoop = (
     }
 
     const animate = (timestamp) => {
-      if (document.hidden) {
+      if (document.hidden || !isInView) {
         lastTimestampRef.current = timestamp;
         rafRef.current = requestAnimationFrame(animate);
         return;
@@ -169,6 +182,7 @@ const useAnimationLoop = (
     rafRef.current = requestAnimationFrame(animate);
 
     return () => {
+      visibilityObserver?.disconnect();
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
       lastTimestampRef.current = null;

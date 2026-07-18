@@ -18,8 +18,10 @@ const LetterGlitch = ({
   const animationRef = useRef(null);
   const letters = useRef([]);
   const grid = useRef({ columns: 0, rows: 0 });
+  const canvasSize = useRef({ width: 0, height: 0 });
   const context = useRef(null);
   const lastGlitchTime = useRef(0);
+  const lastFrameTime = useRef(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
   const lettersAndSymbols = Array.from(characters);
@@ -110,7 +112,7 @@ const LetterGlitch = ({
     if (!context.current || !canvas || letters.current.length === 0) return;
 
     const ctx = context.current;
-    const { width, height } = canvas.getBoundingClientRect();
+    const { width, height } = canvasSize.current;
     ctx.clearRect(0, 0, width, height);
     ctx.font = `${fontSize}px monospace`;
     ctx.textBaseline = "top";
@@ -131,6 +133,7 @@ const LetterGlitch = ({
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     const rect = parent.getBoundingClientRect();
+    canvasSize.current = { width: rect.width, height: rect.height };
     canvas.width = Math.max(1, Math.floor(rect.width * dpr));
     canvas.height = Math.max(1, Math.floor(rect.height * dpr));
     canvas.style.width = `${rect.width}px`;
@@ -150,7 +153,7 @@ const LetterGlitch = ({
 
     const updateCount = Math.max(
       1,
-      Math.floor(letters.current.length * 0.05),
+      Math.floor(letters.current.length * 0.035),
     );
 
     for (let i = 0; i < updateCount; i += 1) {
@@ -193,6 +196,12 @@ const LetterGlitch = ({
   };
 
   const animate = (now) => {
+    if (now - lastFrameTime.current < 32) {
+      animationRef.current = requestAnimationFrame(animate);
+      return;
+    }
+    lastFrameTime.current = now;
+
     if (now - lastGlitchTime.current >= glitchSpeed) {
       updateLetters();
       drawLetters();
@@ -210,22 +219,31 @@ const LetterGlitch = ({
     context.current = canvas.getContext("2d");
     if (!context.current) return;
 
-    resizeCanvas();
-    if (!prefersReducedMotion) {
+    let isInView = true;
+    const canAnimate = () =>
+      !prefersReducedMotion && isInView && !document.hidden;
+    const stopAnimation = () => {
+      if (animationRef.current != null) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+    };
+    const startAnimation = () => {
+      if (!canAnimate() || animationRef.current != null) return;
+      lastGlitchTime.current = performance.now();
+      lastFrameTime.current = 0;
       animationRef.current = requestAnimationFrame(animate);
-    }
+    };
+
+    resizeCanvas();
 
     let resizeTimeout;
     const handleResize = () => {
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
-        if (animationRef.current != null) {
-          cancelAnimationFrame(animationRef.current);
-        }
+        stopAnimation();
         resizeCanvas();
-        if (!prefersReducedMotion) {
-          animationRef.current = requestAnimationFrame(animate);
-        }
+        startAnimation();
       }, 100);
     };
 
@@ -235,15 +253,35 @@ const LetterGlitch = ({
         ? new ResizeObserver(handleResize)
         : null;
     if (parent) resizeObserver?.observe(parent);
+    const visibilityObserver =
+      parent && "IntersectionObserver" in window
+        ? new IntersectionObserver(
+            ([entry]) => {
+              isInView = Boolean(entry?.isIntersecting);
+              if (isInView) startAnimation();
+              else stopAnimation();
+            },
+            { rootMargin: "100px 0px", threshold: 0.01 },
+          )
+        : null;
+    if (parent) visibilityObserver?.observe(parent);
+
+    const handleVisibility = () => {
+      if (document.hidden) stopAnimation();
+      else startAnimation();
+    };
+
     window.addEventListener("resize", handleResize);
+    document.addEventListener("visibilitychange", handleVisibility);
+    startAnimation();
 
     return () => {
-      if (animationRef.current != null) {
-        cancelAnimationFrame(animationRef.current);
-      }
+      stopAnimation();
       clearTimeout(resizeTimeout);
       resizeObserver?.disconnect();
+      visibilityObserver?.disconnect();
       window.removeEventListener("resize", handleResize);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
     // React Bits keeps its canvas loop local to this effect. Color/character
     // updates rebuild the canvas through the dependency list below.

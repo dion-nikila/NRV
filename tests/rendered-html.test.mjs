@@ -33,9 +33,11 @@ test("server-renders the NRV studio site", async () => {
   const html = await response.text();
   assert.match(html, /<title>NRV — Software, resolved<\/title>/i);
   assert.match(html, /Independent software studio/i);
-  assert.match(html, /Software, finished properly\./i);
+  assert.match(html, /Software that earns its place\./i);
   assert.match(html, /Built to be precise\./i);
+  assert.match(html, /Made for the messy middle\./i);
   assert.match(html, /Bring us the rough sketch\./i);
+  assert.match(html, /hello@nrv\.studio/i);
   assert.match(html, /\/og\.png/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
 });
