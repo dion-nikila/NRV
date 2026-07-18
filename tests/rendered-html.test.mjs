@@ -36,12 +36,12 @@ test("server-renders the NRV studio site", async () => {
   assert.match(html, /What we build\./i);
   assert.match(html, /Built to be precise\./i);
   assert.match(html, /Tools are choices, not trophies\./i);
-  assert.match(html, /Made for the messy middle\./i);
   assert.match(html, /How we work\./i);
   assert.match(html, /Bring us the rough sketch\./i);
   assert.match(html, /hello@nrv\.studio/i);
   assert.match(html, /\/og\.png/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
+  assert.doesNotMatch(html, /Made for the messy middle|Fragmented tools|Scattered decisions/i);
 });
 
 test("keeps the finished brand system and restrained component suite wired", async () => {

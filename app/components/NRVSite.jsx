@@ -7,9 +7,9 @@ import LetterGlitch from "./LetterGlitch";
 import PillNav from "./PillNav";
 
 const NAV_ITEMS = [
-  { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },
   { label: "About", href: "#about" },
+  { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
 
@@ -63,7 +63,7 @@ const PROCESS = [
   },
 ];
 
-const ACTIVE_SECTIONS = ["work", "services", "about", "contact"];
+const ACTIVE_SECTIONS = ["services", "about", "process", "contact"];
 const GLITCH_COLORS = ["#16241F", "#2B6B6D", "#9FE1CB"];
 const GLITCH_CHARACTERS = "NRV01{}[]<>/";
 
@@ -177,13 +177,16 @@ export default function NRVSite() {
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-cubes" aria-hidden="true">
             <Cubes
-              gridSize={isCompact ? 6 : 9}
-              maxAngle={isCompact ? 9 : 16}
-              radius={isCompact ? 2 : 2.8}
-              faceColor="#CBAB70"
-              borderStyle="1px solid rgba(43,107,109,0.58)"
+              gridSize={isCompact ? 5 : 8}
+              maxAngle={isCompact ? 24 : 32}
+              radius={isCompact ? 1.75 : 2.35}
+              duration={{ enter: 0.24, leave: 0.64 }}
+              easing="power2.out"
+              cellGap={isCompact ? 6 : 10}
+              faceColor="#C5A368"
+              borderStyle="1px solid rgba(22,36,31,0.58)"
               rippleOnClick={false}
-              autoAnimate={false}
+              autoAnimate={!reducedMotion}
             />
           </div>
           <div className="hero-veil" aria-hidden="true" />
@@ -207,7 +210,7 @@ export default function NRVSite() {
         <section id="about" className="studio-statement" aria-labelledby="studio-title">
           <div className="section-inner studio-statement__grid" data-reveal>
             <h2 id="studio-title">
-              We work where <span>off‑the‑shelf software stops fitting.</span>
+              We get close to the work, <span>find what matters, and build around it.</span>
             </h2>
             <p className="studio-statement__body">
               NRV is a small software studio. We design and build products around the way a team actually works.
@@ -275,55 +278,7 @@ export default function NRVSite() {
           </div>
         </section>
 
-        <section id="work" className="section messy-section" aria-labelledby="work-title">
-          <div className="section-inner">
-            <header className="section-heading section-heading--wide" data-reveal>
-              <h2 id="work-title">Made for the messy middle.</h2>
-              <p>
-                The point where generic tools stop fitting, the workaround starts running the business, and the right answer is not obvious yet.
-              </p>
-            </header>
-
-            <div className="system-diagram" data-reveal>
-              <div className="diagram-context">
-                <span>Fragmented tools</span>
-                <span>Manual process</span>
-                <span>Scattered decisions</span>
-              </div>
-              <div className="diagram-flow" aria-label="Input leads to a decision, which leads to action">
-                <div><small>01</small><strong>Input</strong></div>
-                <span className="diagram-arrow" aria-hidden="true">→</span>
-                <div><small>02</small><strong>Decision</strong></div>
-                <span className="diagram-arrow" aria-hidden="true">→</span>
-                <div><small>03</small><strong>Action</strong></div>
-              </div>
-              <div className="diagram-result">
-                <span>One workflow</span>
-                <span>Visible state</span>
-                <span>Clear next action</span>
-              </div>
-            </div>
-
-            <div className="work-principles">
-              <article data-reveal>
-                <span className="list-number">01</span>
-                <h3>From scattered inputs to one clear flow</h3>
-                <p>
-                  We turn fragmented processes, spreadsheets, and workarounds into a system people can actually use.
-                </p>
-              </article>
-              <article data-reveal>
-                <span className="list-number">02</span>
-                <h3>From a good idea to something people rely on</h3>
-                <p>
-                  We shape the product, build the right version, and keep improving it after launch.
-                </p>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        <section className="section process-section" aria-labelledby="process-title">
+        <section id="process" className="section process-section" aria-labelledby="process-title">
           <div className="section-inner">
             <header className="process-heading" data-reveal>
               <h2 id="process-title">How we work.</h2>
@@ -363,9 +318,9 @@ export default function NRVSite() {
           <div className="footer-links">
             <a className="footer-email" href="mailto:hello@nrv.studio">hello@nrv.studio</a>
             <nav aria-label="Footer navigation">
-              <a href="#work">Work</a>
               <a href="#services">Services</a>
               <a href="#about">About</a>
+              <a href="#process">Process</a>
               <a href="https://github.com/dion-nikila/NRV" target="_blank" rel="noreferrer">GitHub</a>
             </nav>
           </div>

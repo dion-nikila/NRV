@@ -1,7 +1,7 @@
 .default-animation {
   --col-gap: 5%;
   --row-gap: 5%;
-  --cube-perspective: 99999999px;
+  --cube-perspective: 1050px;
   --cube-face-border: 1px solid #fff;
   --cube-face-bg: #120f17;
   --cube-face-shadow: none;
@@ -51,10 +51,12 @@
   border: var(--cube-face-border);
   background: var(--cube-face-bg);
   box-shadow: var(--cube-face-shadow);
+  backface-visibility: hidden;
   opacity: 1;
 }
 
 .default-animation .cube-face--top {
+  background: color-mix(in srgb, var(--cube-face-bg), #f4ead9 10%);
   transform: translateY(-50%) rotateX(90deg);
 }
 
@@ -63,16 +65,21 @@
 }
 
 .default-animation .cube-face--left {
+  background: color-mix(in srgb, var(--cube-face-bg), #16241f 8%);
   transform: translateX(-50%) rotateY(-90deg);
 }
 
 .default-animation .cube-face--right {
+  background: color-mix(in srgb, var(--cube-face-bg), #2b6b6d 9%);
   transform: translateX(50%) rotateY(90deg);
 }
 
-.default-animation .cube-face--back,
 .default-animation .cube-face--front {
   transform: rotateY(-90deg) translateX(50%) rotateY(90deg);
+}
+
+.default-animation .cube-face--back {
+  transform: rotateY(90deg) translateX(50%) rotateY(-90deg);
 }
 
 @media (max-width: 768px) {

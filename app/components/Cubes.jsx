@@ -24,6 +24,7 @@ const Cubes = ({
   ariaLabel,
 }) => {
   const sceneRef = useRef(null);
+  const cubeElementsRef = useRef([]);
   const rafRef = useRef(null);
   const userActiveRef = useRef(false);
   const lastUserInputRef = useRef(0);
@@ -64,6 +65,17 @@ const Cubes = ({
     };
   }, []);
 
+  useEffect(() => {
+    const scene = sceneRef.current;
+    cubeElementsRef.current = scene
+      ? Array.from(scene.querySelectorAll(".cube"))
+      : [];
+
+    return () => {
+      cubeElementsRef.current = [];
+    };
+  }, [gridSize]);
+
   const markUserActive = useCallback(() => {
     userActiveRef.current = true;
     lastUserInputRef.current = performance.now();
@@ -74,7 +86,7 @@ const Cubes = ({
       if (!sceneRef.current || prefersReducedMotion) return;
 
       const nextActive = new Set();
-      sceneRef.current.querySelectorAll(".cube").forEach((cube) => {
+      cubeElementsRef.current.forEach((cube) => {
         const r = Number(cube.dataset.row);
         const c = Number(cube.dataset.col);
         const dist = Math.hypot(r - rowCenter, c - colCenter);
@@ -147,7 +159,7 @@ const Cubes = ({
     const scene = sceneRef.current;
     if (!scene) return;
 
-    const cubes = scene.querySelectorAll(".cube");
+    const cubes = cubeElementsRef.current;
     if (prefersReducedMotion) {
       gsap.set(cubes, { rotateX: 0, rotateY: 0 });
       activeCubesRef.current = new Set();
@@ -188,7 +200,7 @@ const Cubes = ({
       const holdTime = 0.6 / speed;
       const rings = {};
 
-      scene.querySelectorAll(".cube").forEach((cube) => {
+      cubeElementsRef.current.forEach((cube) => {
         const r = Number(cube.dataset.row);
         const c = Number(cube.dataset.col);
         const dist = Math.hypot(r - rowHit, c - colHit);
@@ -343,15 +355,6 @@ const Cubes = ({
     if (!autoAnimate || prefersReducedMotion || !sceneRef.current) return;
 
     const scene = sceneRef.current;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isVisibleRef.current = Boolean(entry?.isIntersecting);
-        if (!entry?.isIntersecting) resetAll();
-      },
-      { rootMargin: "100px 0px", threshold: 0.01 },
-    );
-    observer.observe(scene);
-
     simPosRef.current = {
       x: Math.random() * gridSize,
       y: Math.random() * gridSize,
@@ -363,9 +366,16 @@ const Cubes = ({
 
     const speed = 0.035;
     let lastUpdate = 0;
+    const stopLoop = () => {
+      if (simRAFRef.current != null) {
+        cancelAnimationFrame(simRAFRef.current);
+        simRAFRef.current = null;
+      }
+    };
+
     const loop = (now) => {
+      simRAFRef.current = null;
       if (!isVisibleRef.current || document.hidden) {
-        simRAFRef.current = requestAnimationFrame(loop);
         return;
       }
 
@@ -397,10 +407,40 @@ const Cubes = ({
       simRAFRef.current = requestAnimationFrame(loop);
     };
 
-    simRAFRef.current = requestAnimationFrame(loop);
+    const startLoop = () => {
+      if (
+        simRAFRef.current == null &&
+        isVisibleRef.current &&
+        !document.hidden
+      ) {
+        simRAFRef.current = requestAnimationFrame(loop);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = Boolean(entry?.isIntersecting);
+        if (entry?.isIntersecting) startLoop();
+        else {
+          stopLoop();
+          resetAll();
+        }
+      },
+      { rootMargin: "100px 0px", threshold: 0.01 },
+    );
+    observer.observe(scene);
+
+    const handleVisibility = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    startLoop();
+
     return () => {
       observer.disconnect();
-      if (simRAFRef.current != null) cancelAnimationFrame(simRAFRef.current);
+      document.removeEventListener("visibilitychange", handleVisibility);
+      stopLoop();
     };
   }, [autoAnimate, gridSize, prefersReducedMotion, resetAll, tiltAt]);
 
