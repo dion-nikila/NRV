@@ -267,7 +267,7 @@ export default function Carousel({
             disabled={!loop && activeIndex === 0}
             aria-label="Previous slide"
           >
-            ←
+            Previous
           </button>
           <button
             type="button"
@@ -276,7 +276,7 @@ export default function Carousel({
             disabled={!loop && activeIndex === items.length - 1}
             aria-label="Next slide"
           >
-            →
+            Next
           </button>
         </div>
 

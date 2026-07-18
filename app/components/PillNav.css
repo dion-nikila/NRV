@@ -229,18 +229,22 @@
   }
 
   .nrv-nav__rail {
-    min-height: 56px;
+    min-height: 52px;
     padding: 4px 6px 4px 9px;
-    border-radius: 16px;
+    border-radius: 14px;
   }
 
   .nrv-nav__logo {
-    width: 68px;
-    min-height: 46px;
+    width: 62px;
+    min-height: 42px;
   }
 
   .nrv-nav__logo img {
-    width: 64px;
+    width: 58px;
+  }
+
+  .nrv-nav__menu-button {
+    min-height: 42px;
   }
 
   .nrv-nav__desktop {

@@ -44,6 +44,8 @@ test("server-renders the NRV studio site", async () => {
   assert.match(html, /\/og-v2\.png/i);
   assert.ok(html.indexOf("Built to be precise.") > html.indexOf("We build"));
   assert.doesNotMatch(html, /Independent software studio|Made for the messy middle|Software should fit the work|Software, finished properly|Close to the work|class="section-index"|href="#work"/i);
+  assert.doesNotMatch(html, /[↗↘→←↑↓×✦★☆•©·]/u);
+  assert.match(html, /Copyright(?:\s|<!-- -->)*\d{4}(?:\s|<!-- -->)*NRV/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
 });
 

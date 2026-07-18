@@ -184,14 +184,16 @@
 .carousel-arrow {
   display: grid;
   place-items: center;
-  width: 46px;
+  min-width: 88px;
   height: 46px;
-  padding: 0;
+  padding: 0 16px;
   border: 1px solid rgba(22, 36, 31, 0.3);
-  border-radius: 50%;
+  border-radius: 999px;
   background: transparent;
   color: var(--ink);
   cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 500;
 }
 
 .carousel-arrow:hover {
@@ -250,13 +252,13 @@
 @media (max-width: 768px) {
   .carousel-item {
     grid-template-columns: 1fr;
-    min-height: 500px;
+    min-height: 420px;
   }
 
   .carousel-item-header {
     flex-direction: row;
     align-items: center;
-    padding: 24px 22px;
+    padding: 18px;
     border-right: 0;
     border-bottom: 1px solid rgba(22, 36, 31, 0.18);
   }
@@ -267,15 +269,15 @@
   }
 
   .carousel-item-content {
-    padding: 36px 22px 42px;
+    padding: 26px 18px 32px;
   }
 
   .carousel-item-title {
-    font-size: clamp(3.2rem, 15vw, 4.7rem);
+    font-size: clamp(2.8rem, 13vw, 3.8rem);
   }
 
   .carousel-item-description {
-    margin-top: 22px;
+    margin-top: 18px;
     font-size: 0.93rem;
   }
 
@@ -285,8 +287,9 @@
   }
 
   .carousel-controls {
-    grid-template-columns: auto 1fr;
-    gap: 12px;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    padding-top: 16px;
   }
 
   .carousel-status {
@@ -294,7 +297,18 @@
   }
 
   .carousel-indicators {
-    justify-content: flex-end;
+    order: 1;
+    justify-content: center;
+  }
+
+  .carousel-buttons {
+    order: 2;
+    justify-content: space-between;
+  }
+
+  .carousel-arrow {
+    min-width: 96px;
+    height: 42px;
   }
 }
 

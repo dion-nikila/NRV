@@ -112,13 +112,17 @@
   }
 
   .line-sidebar__list {
-    gap: 4px;
+    gap: 0;
     padding: 0;
+  }
+
+  .line-sidebar__item::before {
+    inset: -4px 0;
   }
 
   .line-sidebar__button {
     width: 100%;
-    min-height: 52px;
+    min-height: 46px;
     font-size: clamp(1.35rem, 7vw, 1.85rem);
   }
 }

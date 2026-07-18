@@ -720,7 +720,7 @@ button:focus-visible {
 
 @media (max-width: 768px) {
   :root {
-    --content: calc(100% - 40px);
+    --content: calc(100% - 32px);
   }
 
   html {
@@ -728,63 +728,61 @@ button:focus-visible {
   }
 
   .hero {
-    min-height: max(760px, 100svh);
+    min-height: max(620px, 100svh);
   }
 
   .hero::after {
-    right: -40vw;
-    bottom: -18vw;
-    width: 110vw;
-    height: 84vw;
+    display: none;
   }
 
   .hero-cubes {
-    bottom: 35%;
-    height: 65%;
-    opacity: 0.88;
+    inset: 0;
+    height: auto;
+    opacity: 0.9;
   }
 
   .hero-wash {
     background:
-      linear-gradient(180deg, rgba(203, 171, 112, 0.03) 0%, rgba(203, 171, 112, 0.12) 42%, rgba(203, 171, 112, 0.94) 71%, var(--paper) 100%);
+      radial-gradient(ellipse at 50% 52%, rgba(203, 171, 112, 0.96) 0%, rgba(203, 171, 112, 0.87) 28%, rgba(203, 171, 112, 0.52) 50%, rgba(203, 171, 112, 0.08) 74%, transparent 86%),
+      linear-gradient(180deg, rgba(203, 171, 112, 0.04) 0%, rgba(203, 171, 112, 0.02) 62%, rgba(22, 36, 31, 0.16) 100%);
   }
 
   .hero-layout {
-    min-height: max(760px, 100svh);
-    padding: 105px 0 64px;
+    min-height: max(620px, 100svh);
+    padding: 92px 0 48px;
   }
 
   .hero h1 {
-    font-size: clamp(3.35rem, 15.8vw, 5rem);
-    line-height: 0.86;
+    font-size: clamp(2.9rem, 14vw, 4.2rem);
+    line-height: 0.88;
   }
 
   .hero-word-wrap {
-    min-height: 1.04em;
-    font-size: 0.57em;
+    min-height: 1em;
+    font-size: 0.54em;
   }
 
   .hero-subhead {
-    max-width: 37ch;
-    margin-top: 24px;
-    font-size: 0.95rem;
+    max-width: 31ch;
+    margin-top: 20px;
+    font-size: 0.9rem;
   }
 
   .hero-actions {
     display: grid;
     grid-template-columns: 1fr;
-    width: min(100%, 340px);
-    margin: 27px auto 0;
+    width: auto;
+    margin: 22px auto 0;
   }
 
   .button {
-    min-height: 52px;
+    min-height: 48px;
     padding-inline: 18px;
     font-size: 0.82rem;
   }
 
   .section {
-    padding: 82px 0;
+    padding: 64px 0;
     scroll-margin-top: 80px;
   }
 
@@ -798,17 +796,17 @@ button:focus-visible {
   .process-heading,
   .contact-inner {
     grid-template-columns: 1fr;
-    gap: 25px;
+    gap: 18px;
   }
 
   .precision-frame {
-    min-height: 520px;
+    min-height: 460px;
     border-radius: 24px 24px 72px 24px;
   }
 
   .precision-copy {
-    min-height: 520px;
-    padding: 56px 22px;
+    min-height: 460px;
+    padding: 48px 18px;
   }
 
   .precision-copy h2 {
@@ -830,12 +828,13 @@ button:focus-visible {
   }
 
   .stack-section {
-    margin-top: 70px;
-    padding-top: 26px;
+    margin-top: 40px;
+    padding: 22px 0 8px;
   }
 
   .stack-heading {
     display: block;
+    margin-bottom: 18px;
   }
 
   .stack-heading > span {
@@ -850,11 +849,12 @@ button:focus-visible {
 
   .capabilities-heading,
   .process-heading {
-    margin-bottom: 51px;
+    margin-bottom: 32px;
   }
 
   .capabilities-heading .section-kicker {
     grid-column: auto;
+    margin-bottom: 0;
   }
 
   .capabilities-heading h2,
@@ -872,19 +872,19 @@ button:focus-visible {
   }
 
   .capabilities-interface .line-sidebar {
-    padding-top: 39px;
-    padding-bottom: 41px;
+    padding-top: 24px;
+    padding-bottom: 28px;
   }
 
   .capability-detail {
-    min-height: 450px;
-    padding: 72px 0 43px;
+    min-height: 360px;
+    padding: 60px 0 34px;
     border-top: 1px solid var(--hairline-light);
     border-left: 0;
   }
 
   .capability-detail__signal {
-    top: 36px;
+    top: 28px;
     left: 0;
   }
 
@@ -894,12 +894,12 @@ button:focus-visible {
   }
 
   .capability-scope {
-    margin-top: 28px;
+    margin-top: 22px;
     font-size: 0.68rem;
   }
 
   .contact-section {
-    padding: 82px 0 88px;
+    padding: 64px 0 68px;
     scroll-margin-top: 80px;
   }
 
@@ -925,7 +925,7 @@ button:focus-visible {
   }
 
   .footer-inner {
-    padding: 72px 0 24px;
+    padding: 56px 0 20px;
   }
 
   .footer-brand-row,
@@ -934,7 +934,7 @@ button:focus-visible {
   }
 
   .footer-brand-row {
-    gap: 45px;
+    gap: 22px;
   }
 
   .footer-wordmark {
@@ -946,13 +946,16 @@ button:focus-visible {
   }
 
   .footer-links-row {
-    gap: 34px;
+    gap: 24px;
     align-items: start;
-    margin-top: 60px;
+    margin-top: 40px;
+    padding: 24px 0;
   }
 
   .footer-email {
+    width: auto;
     max-width: 100%;
+    overflow-wrap: anywhere;
     font-size: clamp(1.5rem, 7vw, 2.2rem);
   }
 
@@ -967,16 +970,12 @@ button:focus-visible {
     align-items: flex-start;
     flex-direction: column;
     gap: 6px;
-  }
-}
-
-@media (max-width: 390px) {
-  .hero h1 {
-    font-size: 3.05rem;
+    padding-top: 16px;
   }
 
-  .hero-word-wrap {
-    font-size: 0.55em;
+  .stack-section .nrv-logoloop {
+    --nrv-logoloop-gap: 28px !important;
+    --nrv-logoloop-logo-height: 26px !important;
   }
 }
 

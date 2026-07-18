@@ -42,25 +42,25 @@ const CAPABILITIES = [
     title: "Operational platforms",
     description:
       "Replace scattered handoffs with one clear system built around how the team actually works.",
-    scope: "Workflows · permissions · reporting",
+    scope: "Workflows, permissions, reporting",
   },
   {
     title: "Customer-facing products",
     description:
       "Turn a useful idea into a fast, dependable product customers understand and your team can evolve.",
-    scope: "Journeys · integrations · design systems",
+    scope: "Journeys, integrations, design systems",
   },
   {
     title: "Mobile tools",
     description:
       "Focused apps for work that needs to move beautifully beyond the desk.",
-    scope: "iOS + Android · offline states · notifications",
+    scope: "iOS and Android, offline states, notifications",
   },
   {
     title: "Product care",
     description:
       "Clarify, harden, and steadily improve software that already matters.",
-    scope: "Research · prototyping · ongoing stewardship",
+    scope: "Research, prototyping, ongoing stewardship",
   },
 ];
 
@@ -232,7 +232,7 @@ export default function NRVSite() {
                 NRV designs and builds custom software for teams whose work has outgrown generic tools.
               </p>
               <div className="hero-actions">
-                <a className="button button--rust" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
+                <a className="button button--rust" href="#contact">Start a project</a>
               </div>
             </div>
           </div>
@@ -367,7 +367,7 @@ export default function NRVSite() {
             <div className="contact-action">
               <p>Tell us what is slow, fragile, unclear, or held together by workarounds. We’ll help shape the next useful version.</p>
               <a className="button button--cream button--large" href="mailto:hello@nrv.studio">
-                Start a conversation <span aria-hidden="true">↗</span>
+                Start a conversation
               </a>
             </div>
           </div>
@@ -387,12 +387,12 @@ export default function NRVSite() {
               <a href="#precision">Craft</a>
               <a href="#capabilities">Capabilities</a>
               <a href="#process">Process</a>
-              <a href="#top">Back to top ↑</a>
+              <a href="#top">Back to top</a>
             </nav>
           </div>
 
           <div className="footer-meta">
-            <span>© {new Date().getFullYear()} NRV</span>
+            <span>Copyright {new Date().getFullYear()} NRV</span>
             <span>Small studio. Serious build quality.</span>
           </div>
         </div>
