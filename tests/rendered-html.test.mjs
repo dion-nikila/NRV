@@ -32,11 +32,15 @@ test("server-renders the NRV studio site", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>NRV — Software, resolved<\/title>/i);
-  assert.match(html, /Independent software studio/i);
+  assert.match(html, /We build/i);
+  assert.match(html, /Software should fit the work/i);
   assert.match(html, /Software, finished properly\./i);
   assert.match(html, /Built to be precise\./i);
+  assert.match(html, /Close to the work\. Clear about what matters\./i);
   assert.match(html, /Bring us the rough sketch\./i);
-  assert.match(html, /\/og\.png/i);
+  assert.match(html, /hello@nrv\.studio/i);
+  assert.match(html, /\/og-v2\.png/i);
+  assert.doesNotMatch(html, /Independent software studio|Made for the messy middle|class="section-index"|href="#work"/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
 });
 
@@ -51,7 +55,7 @@ test("keeps the finished brand system and component suite wired", async () => {
 
   assert.match(page, /<NRVSite \/>/);
   assert.match(layout, /NRV — Software, resolved/);
-  assert.match(layout, /\/og\.png/);
+  assert.match(layout, /\/og-v2\.png/);
   assert.match(globals, /--paper:\s*#cbab70/i);
   assert.match(globals, /--ink:\s*#16241f/i);
   assert.match(globals, /--teal:\s*#2b6b6d/i);
@@ -72,7 +76,7 @@ test("keeps the finished brand system and component suite wired", async () => {
 
   await Promise.all([
     access(new URL("../public/nrv-mark.svg", import.meta.url)),
-    access(new URL("../public/og.png", import.meta.url)),
+    access(new URL("../public/og-v2.png", import.meta.url)),
     assert.rejects(access(new URL("../app/_sites-preview", import.meta.url))),
   ]);
 

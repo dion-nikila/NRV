@@ -17,12 +17,12 @@ export async function generateMetadata(): Promise<Metadata> {
     requestHeaders.get("x-forwarded-proto") ??
     (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const socialImage = new URL("/og.png", origin).toString();
+  const socialImage = new URL("/og-v2.png", origin).toString();
 
   return {
     title: "NRV — Software, resolved",
     description:
-      "NRV is an independent software studio building thoughtful web platforms, operations software, mobile apps, and custom tools.",
+      "NRV designs and builds custom software for teams whose work has outgrown generic tools.",
     applicationName: "NRV",
     keywords: [
       "software studio",
@@ -42,7 +42,7 @@ export async function generateMetadata(): Promise<Metadata> {
           url: socialImage,
           width: 1731,
           height: 909,
-          alt: "NRV — Software, resolved",
+          alt: "NRV — Software built around the way you work.",
         },
       ],
     },

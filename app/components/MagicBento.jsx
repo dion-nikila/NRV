@@ -12,38 +12,26 @@ const cardData = [
   {
     color: '#16241F',
     title: 'Web platforms',
-    description: 'Reliable products built for the browser.',
-    label: 'Platforms'
+    description: 'Fast, considered web products built for real use and straightforward change.',
+    label: 'Customer portals · Web applications · Product sites'
   },
   {
     color: '#16241F',
-    title: 'Ops software',
-    description: 'BayFlow for premium automotive service operations.',
-    label: 'BayFlow'
+    title: 'Operations software',
+    description: 'Clear internal systems for work that has outgrown spreadsheets and fragile handoffs.',
+    label: 'Internal tools · Workflow systems · Dashboards'
   },
   {
     color: '#16241F',
-    title: 'Mobile apps',
-    description: 'Focused apps that feel native in the hand.',
-    label: 'Mobile'
+    title: 'Mobile applications',
+    description: 'Focused apps designed around the moments people actually reach for them.',
+    label: 'iOS and Android · Cross-platform · Offline flows'
   },
   {
     color: '#16241F',
-    title: 'Custom tools',
-    description: 'Purpose-built software for uncommon work.',
-    label: 'Systems'
-  },
-  {
-    color: '#16241F',
-    title: 'Product design',
-    description: 'Clear interfaces shaped around real habits.',
-    label: 'Design'
-  },
-  {
-    color: '#16241F',
-    title: 'Ongoing support',
-    description: 'Careful maintenance as products evolve.',
-    label: 'Support'
+    title: 'Product design and ongoing care',
+    description: 'Product direction, interface design, testing, launch, and the work that follows.',
+    label: 'Strategy · UX and UI · QA and iteration'
   }
 ];
 

@@ -16,11 +16,13 @@ const BUILD_WORDS = [
 ];
 
 const NAV_ITEMS = [
-  { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },
-  { label: "Products", href: "#products" },
+  { label: "Craft", href: "#precision" },
+  { label: "Approach", href: "#approach" },
   { label: "Contact", href: "#contact" },
 ];
+
+const ACTIVE_SECTIONS = ["services", "precision", "approach", "contact"];
 
 const STACK = [
   { node: <span className="stack-mark">Next.js</span>, title: "Next.js" },
@@ -33,20 +35,36 @@ const STACK = [
   { node: <span className="stack-mark">GSAP</span>, title: "GSAP" },
 ];
 
-function SectionIndex({ children }) {
-  return <span className="section-index" aria-hidden="true">{children}</span>;
-}
+const APPROACH = [
+  {
+    label: "Understand",
+    title: "Start with the real work.",
+    description:
+      "We learn the people, handoffs, constraints, and exceptions before deciding what the product should be.",
+  },
+  {
+    label: "Resolve",
+    title: "Make the complex part clear.",
+    description:
+      "We turn the essential decisions into one coherent system, without sanding away what makes the work specific.",
+  },
+  {
+    label: "Build",
+    title: "Ship something built to last.",
+    description:
+      "We design, engineer, test, and refine the product as one team—then leave it straightforward to evolve.",
+  },
+];
 
 export default function NRVSite() {
   const rootRef = useRef(null);
-  const cursorRef = useRef(null);
   const [wordIndex, setWordIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [activeHref, setActiveHref] = useState("");
 
   useEffect(() => {
-    const viewportQuery = window.matchMedia("(max-width: 767px)");
+    const viewportQuery = window.matchMedia("(max-width: 768px)");
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncPreferences = () => {
@@ -73,10 +91,7 @@ export default function NRVSite() {
   }, [reducedMotion]);
 
   useEffect(() => {
-    const sections = ["services", "products", "work", "contact"]
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-
+    const sections = ACTIVE_SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries
@@ -84,7 +99,7 @@ export default function NRVSite() {
           .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
         if (visible?.target?.id) setActiveHref(`#${visible.target.id}`);
       },
-      { rootMargin: "-28% 0px -58%", threshold: [0, 0.1, 0.3] },
+      { rootMargin: "-25% 0px -62%", threshold: [0, 0.1, 0.3] },
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -94,31 +109,27 @@ export default function NRVSite() {
   useEffect(() => {
     if (reducedMotion || !rootRef.current) return undefined;
 
-    let scrollTrigger;
     let context;
     let disposed = false;
 
     const setup = async () => {
-      const scrollTriggerModule = await import("gsap/ScrollTrigger");
+      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
       if (disposed) return;
-      scrollTrigger = scrollTriggerModule.ScrollTrigger;
-      gsap.registerPlugin(scrollTrigger);
+      gsap.registerPlugin(ScrollTrigger);
 
       context = gsap.context(() => {
         gsap.utils.toArray("[data-resolve]").forEach((element) => {
           gsap.fromTo(
             element,
-            { autoAlpha: 0, y: 44, filter: "blur(16px)", scale: 0.985 },
+            { autoAlpha: 0, y: 28 },
             {
               autoAlpha: 1,
               y: 0,
-              filter: "blur(0px)",
-              scale: 1,
-              duration: 0.95,
+              duration: 0.72,
               ease: "power3.out",
               scrollTrigger: {
                 trigger: element,
-                start: "top 84%",
+                start: "top 88%",
                 once: true,
               },
             },
@@ -128,35 +139,9 @@ export default function NRVSite() {
     };
 
     setup();
-
     return () => {
       disposed = true;
       context?.revert();
-    };
-  }, [reducedMotion]);
-
-  useEffect(() => {
-    const cursor = cursorRef.current;
-    const finePointer = window.matchMedia("(pointer: fine)").matches;
-    if (!cursor || !finePointer || reducedMotion) return undefined;
-
-    const moveX = gsap.quickTo(cursor, "x", { duration: 0.55, ease: "power3.out" });
-    const moveY = gsap.quickTo(cursor, "y", { duration: 0.55, ease: "power3.out" });
-    const show = () => gsap.to(cursor, { opacity: 0.32, duration: 0.25 });
-    const hide = () => gsap.to(cursor, { opacity: 0, duration: 0.35 });
-    const move = (event) => {
-      moveX(event.clientX);
-      moveY(event.clientY);
-    };
-
-    window.addEventListener("pointermove", move, { passive: true });
-    document.documentElement.addEventListener("mouseenter", show);
-    document.documentElement.addEventListener("mouseleave", hide);
-
-    return () => {
-      window.removeEventListener("pointermove", move);
-      document.documentElement.removeEventListener("mouseenter", show);
-      document.documentElement.removeEventListener("mouseleave", hide);
     };
   }, [reducedMotion]);
 
@@ -165,17 +150,12 @@ export default function NRVSite() {
   return (
     <main ref={rootRef} id="top" className="site-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
-      <div ref={cursorRef} className="ink-cursor" aria-hidden="true" />
 
       <PillNav
         logo="/nrv-mark.svg"
-        logoAlt="NRV home"
+        logoAlt="NRV"
         items={NAV_ITEMS}
         activeHref={activeHref}
-        baseColor="#16241F"
-        pillColor="#CBAB70"
-        pillTextColor="#16241F"
-        hoveredPillTextColor="#F4EAD9"
         initialLoadAnimation={!reducedMotion}
       />
 
@@ -196,69 +176,65 @@ export default function NRVSite() {
 
           <div className="hero-wash" aria-hidden="true" />
           <div className="hero-layout">
-            <div className="hero-panel" data-resolve>
-              <p className="eyebrow">
-                <span className="eyebrow-dot" />
-                Independent software studio
-              </p>
+            <div className="hero-copy" data-resolve>
               <h1 id="hero-title">
-                We build
+                <span className="hero-title-lead">We build</span>
                 <span className="hero-word-wrap" aria-live="polite">
                   <span key={currentWord} className="hero-word">{currentWord}</span>
                 </span>
                 <span className="hero-title-tail">that hold up.</span>
               </h1>
               <p className="hero-subhead">
-                NRV turns rough briefs into thoughtful, working software — shaped with care, shipped with conviction.
+                NRV designs and builds custom software for teams whose work has outgrown generic tools.
               </p>
               <div className="hero-actions">
-                <a className="button button--rust" href="#work">See our work <span aria-hidden="true">↘</span></a>
-                <a className="button button--ghost" href="#contact">Talk to us <span aria-hidden="true">→</span></a>
+                <a className="button button--rust" href="#contact">Start a project <span aria-hidden="true">↗</span></a>
               </div>
             </div>
-
-            <div className="hero-note" data-resolve>
-              <span className="hero-note-mark" aria-hidden="true">✦</span>
-              <span>Touch, tilt, or click the grid</span>
-            </div>
-          </div>
-
-          <div className="hero-footerline" aria-hidden="true">
-            <span>Ideas in</span>
-            <span className="hero-footerline-rule" />
-            <span>Working software out</span>
           </div>
         </section>
 
-        <section id="services" className="section section--ink build-section" aria-labelledby="build-title">
-          <div className="section-inner">
-            <div className="section-heading section-heading--light" data-resolve>
-              <SectionIndex>01</SectionIndex>
-              <div>
-                <p className="eyebrow eyebrow--light">What we build</p>
-                <h2 id="build-title">Software, finished properly.</h2>
-              </div>
-              <p className="section-intro">
-                From a first sketch to the stubborn final detail, we make digital products that feel clear, useful, and distinctly yours.
-              </p>
-            </div>
+        <section className="studio-bridge" aria-labelledby="studio-bridge-title">
+          <div className="studio-bridge__inner" data-resolve>
+            <h2 id="studio-bridge-title">Software should fit the work. Not the other way around.</h2>
+            <p>We get close to the process, learn where it breaks, and build around what people actually need.</p>
+          </div>
+        </section>
 
-            <div id="products" className="anchor-target" data-resolve>
+        <section id="services" className="section section--ink services-section" aria-labelledby="services-title">
+          <div className="section-inner">
+            <header className="services-heading" data-resolve>
+              <div>
+                <p className="section-kicker section-kicker--light">What we build</p>
+                <h2 id="services-title">Software, finished properly.</h2>
+              </div>
+              <div className="services-intro">
+                <p>Good software should make demanding work feel direct, dependable, and easier to move through.</p>
+                <p>We bring product thinking, design, and engineering into one focused build—then stay close enough to make the final details count.</p>
+              </div>
+            </header>
+
+            <div data-resolve>
               <MagicBento
                 glowColor="43, 107, 109"
-                enableTilt
-                enableMagnetism
-                clickEffect
-                enableSpotlight
-                enableBorderGlow
-                enableStars
+                enableTilt={false}
+                enableMagnetism={false}
+                clickEffect={false}
+                enableSpotlight={false}
+                enableBorderGlow={false}
+                enableStars={false}
                 disableAnimations={reducedMotion}
               />
             </div>
+
+            <div className="services-promise" data-resolve>
+              <p>One studio from the first useful question to the product people rely on.</p>
+              <a href="#precision">See how we build <span aria-hidden="true">↓</span></a>
+            </div>
           </div>
         </section>
 
-        <section className="section section--paper craft-section" aria-labelledby="precision-title">
+        <section id="precision" className="section section--paper craft-section" aria-labelledby="precision-title">
           <div className="section-inner">
             <div className="precision-frame" data-resolve>
               <LetterGlitch
@@ -286,7 +262,7 @@ export default function NRVSite() {
             <div className="stack-section" data-resolve>
               <div className="stack-heading">
                 <p className="eyebrow">A flexible stack, chosen on purpose</p>
-                <span>Tools follow the problem — never the other way around.</span>
+                <span>Tools follow the problem—never the other way around.</span>
               </div>
               <LogoLoop
                 logos={STACK}
@@ -303,87 +279,65 @@ export default function NRVSite() {
           </div>
         </section>
 
-        <section id="work" className="section section--paper work-section" aria-labelledby="work-title">
+        <section id="approach" className="section approach-section" aria-labelledby="approach-title">
           <div className="section-inner">
-            <div className="section-heading" data-resolve>
-              <SectionIndex>02</SectionIndex>
-              <div>
-                <p className="eyebrow">Selected work</p>
-                <h2 id="work-title">Made for the messy middle.</h2>
-              </div>
-              <p className="section-intro">
-                The best software disappears into the work: fewer handoffs, clearer decisions, calmer days.
-              </p>
-            </div>
+            <header className="approach-heading" data-resolve>
+              <p className="section-kicker">How we work</p>
+              <h2 id="approach-title">Close to the work. Clear about what matters.</h2>
+              <p>There is one continuous path from understanding the problem to shipping a system that can keep evolving.</p>
+            </header>
 
-            <div className="work-grid">
-              <article className="project-card project-card--bayflow" data-resolve>
-                <div className="project-card-topline">
-                  <span>Selected practice</span>
-                  <span>Operational systems</span>
-                </div>
-                <div className="bayflow-visual" aria-hidden="true">
-                  <div className="bayflow-sidebar">
-                    <span className="bayflow-logo">B</span>
-                    <i /><i /><i /><i />
-                  </div>
-                  <div className="bayflow-screen">
-                    <div className="bayflow-screen-head"><b /><span /></div>
-                    <div className="bayflow-metrics"><i /><i /><i /></div>
-                    <div className="bayflow-lines"><i /><i /><i /><i /></div>
-                  </div>
-                </div>
-                <div className="project-card-copy">
-                  <p className="eyebrow eyebrow--light">Workflow software</p>
-                  <h3>Connected operations.</h3>
-                  <p>Purpose-built systems that bring jobs, customers, teams, and decisions into one legible flow.</p>
-                </div>
-              </article>
-
-              <article className="project-card project-card--custom" data-resolve>
-                <div className="project-card-topline">
-                  <span>Client systems</span>
-                  <span>Designed around the work</span>
-                </div>
-                <div className="system-map" aria-hidden="true">
-                  <span className="system-node system-node--one">Brief</span>
-                  <span className="system-path system-path--one" />
-                  <span className="system-node system-node--two">Build</span>
-                  <span className="system-path system-path--two" />
-                  <span className="system-node system-node--three">Ship</span>
-                  <span className="system-bloom" />
-                </div>
-                <div className="project-card-copy project-card-copy--dark">
-                  <p className="eyebrow">Custom platforms</p>
-                  <h3>Your workflow, made legible.</h3>
-                  <p>Purpose-built portals, tools, and products — without forcing your business into someone else’s template.</p>
-                </div>
-              </article>
+            <div className="approach-list">
+              {APPROACH.map((item) => (
+                <article key={item.label} data-resolve>
+                  <span>{item.label}</span>
+                  <h3>{item.title}</h3>
+                  <p>{item.description}</p>
+                </article>
+              ))}
             </div>
           </div>
         </section>
 
         <section id="contact" className="contact-section" aria-labelledby="contact-title">
-          <div className="contact-ink" aria-hidden="true" />
           <div className="contact-inner" data-resolve>
-            <p className="eyebrow eyebrow--light">Have something in mind?</p>
-            <h2 id="contact-title">Bring us the rough sketch.</h2>
-            <p>We’ll help turn it into something clear, useful, and ready for the world.</p>
-            <a className="button button--rust button--large" href="mailto:hello@nrv.studio">
-              Start a conversation <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-
-          <footer className="site-footer">
-            <a className="footer-wordmark" href="#top" aria-label="Back to top">NRV</a>
-            <div className="footer-details">
-              <a href="mailto:hello@nrv.studio">hello@nrv.studio</a>
-              <span>Small studio. Serious build quality.</span>
+            <div>
+              <p className="section-kicker section-kicker--light">Have something in mind?</p>
+              <h2 id="contact-title">Bring us the rough sketch.</h2>
             </div>
-            <a className="back-to-top" href="#top">Back to top ↑</a>
-          </footer>
+            <div className="contact-action">
+              <p>Tell us what is slow, fragile, unclear, or held together by workarounds. We’ll help shape the next useful version.</p>
+              <a className="button button--cream button--large" href="mailto:hello@nrv.studio">
+                Start a conversation <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
         </section>
       </div>
+
+      <footer className="site-footer">
+        <div className="footer-inner">
+          <div className="footer-brand-row">
+            <a className="footer-wordmark" href="#top" aria-label="NRV — back to top">NRV</a>
+            <p>Thoughtful software for work that deserves a better system.</p>
+          </div>
+
+          <div className="footer-links-row">
+            <a className="footer-email" href="mailto:hello@nrv.studio">hello@nrv.studio</a>
+            <nav aria-label="Footer navigation">
+              <a href="#services">Services</a>
+              <a href="#precision">Craft</a>
+              <a href="#approach">Approach</a>
+              <a href="#top">Back to top ↑</a>
+            </nav>
+          </div>
+
+          <div className="footer-meta">
+            <span>© {new Date().getFullYear()} NRV</span>
+            <span>Small studio. Serious build quality.</span>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

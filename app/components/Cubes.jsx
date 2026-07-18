@@ -24,9 +24,12 @@ const Cubes = ({
   ariaLabel,
 }) => {
   const sceneRef = useRef(null);
+  const cubeElementsRef = useRef([]);
   const rafRef = useRef(null);
-  const idleTimerRef = useRef(null);
   const userActiveRef = useRef(false);
+  const lastUserInputRef = useRef(0);
+  const activeCubesRef = useRef(new Set());
+  const isVisibleRef = useRef(true);
   const simPosRef = useRef({ x: 0, y: 0 });
   const simTargetRef = useRef({ x: 0, y: 0 });
   const simRAFRef = useRef(null);
@@ -62,25 +65,34 @@ const Cubes = ({
     };
   }, []);
 
+  useEffect(() => {
+    const scene = sceneRef.current;
+    cubeElementsRef.current = scene
+      ? Array.from(scene.querySelectorAll(".cube"))
+      : [];
+
+    return () => {
+      cubeElementsRef.current = [];
+    };
+  }, [gridSize]);
+
   const markUserActive = useCallback(() => {
     userActiveRef.current = true;
-    if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
-
-    idleTimerRef.current = setTimeout(() => {
-      userActiveRef.current = false;
-    }, 3000);
+    lastUserInputRef.current = performance.now();
   }, []);
 
   const tiltAt = useCallback(
     (rowCenter, colCenter) => {
       if (!sceneRef.current || prefersReducedMotion) return;
 
-      sceneRef.current.querySelectorAll(".cube").forEach((cube) => {
+      const nextActive = new Set();
+      cubeElementsRef.current.forEach((cube) => {
         const r = Number(cube.dataset.row);
         const c = Number(cube.dataset.col);
         const dist = Math.hypot(r - rowCenter, c - colCenter);
 
         if (dist <= radius) {
+          nextActive.add(cube);
           const pct = radius > 0 ? 1 - dist / radius : 1;
           const angle = pct * maxAngle;
           gsap.to(cube, {
@@ -90,16 +102,20 @@ const Cubes = ({
             rotateX: -angle,
             rotateY: angle,
           });
-        } else {
-          gsap.to(cube, {
-            duration: leaveDur,
-            ease: "power3.out",
-            overwrite: true,
-            rotateX: 0,
-            rotateY: 0,
-          });
         }
       });
+
+      activeCubesRef.current.forEach((cube) => {
+        if (nextActive.has(cube)) return;
+        gsap.to(cube, {
+          duration: leaveDur,
+          ease: "power3.out",
+          overwrite: true,
+          rotateX: 0,
+          rotateY: 0,
+        });
+      });
+      activeCubesRef.current = nextActive;
     },
     [radius, maxAngle, enterDur, leaveDur, easing, prefersReducedMotion],
   );
@@ -143,9 +159,10 @@ const Cubes = ({
     const scene = sceneRef.current;
     if (!scene) return;
 
-    const cubes = scene.querySelectorAll(".cube");
+    const cubes = cubeElementsRef.current;
     if (prefersReducedMotion) {
       gsap.set(cubes, { rotateX: 0, rotateY: 0 });
+      activeCubesRef.current = new Set();
       return;
     }
 
@@ -156,6 +173,7 @@ const Cubes = ({
       ease: "power3.out",
       overwrite: true,
     });
+    activeCubesRef.current = new Set();
   }, [leaveDur, prefersReducedMotion]);
 
   const rippleAt = useCallback(
@@ -182,7 +200,7 @@ const Cubes = ({
       const holdTime = 0.6 / speed;
       const rings = {};
 
-      scene.querySelectorAll(".cube").forEach((cube) => {
+      cubeElementsRef.current.forEach((cube) => {
         const r = Number(cube.dataset.row);
         const c = Number(cube.dataset.col);
         const dist = Math.hypot(r - rowHit, c - colHit);
@@ -336,6 +354,7 @@ const Cubes = ({
   useEffect(() => {
     if (!autoAnimate || prefersReducedMotion || !sceneRef.current) return;
 
+    const scene = sceneRef.current;
     simPosRef.current = {
       x: Math.random() * gridSize,
       y: Math.random() * gridSize,
@@ -345,8 +364,31 @@ const Cubes = ({
       y: Math.random() * gridSize,
     };
 
-    const speed = 0.02;
-    const loop = () => {
+    const baseSpeed = 0.02;
+    let lastUpdate = 0;
+    const stopLoop = () => {
+      if (simRAFRef.current != null) {
+        cancelAnimationFrame(simRAFRef.current);
+        simRAFRef.current = null;
+      }
+    };
+
+    const loop = (now) => {
+      simRAFRef.current = null;
+      if (!isVisibleRef.current || document.hidden) return;
+
+      if (userActiveRef.current && now - lastUserInputRef.current > 3000) {
+        userActiveRef.current = false;
+      }
+
+      const elapsed = lastUpdate ? now - lastUpdate : 1000 / 60;
+      if (lastUpdate && elapsed < 32) {
+        simRAFRef.current = requestAnimationFrame(loop);
+        return;
+      }
+      lastUpdate = now;
+      const speed = 1 - Math.pow(1 - baseSpeed, elapsed / (1000 / 60));
+
       if (!userActiveRef.current) {
         const pos = simPosRef.current;
         const target = simTargetRef.current;
@@ -365,11 +407,42 @@ const Cubes = ({
       simRAFRef.current = requestAnimationFrame(loop);
     };
 
-    simRAFRef.current = requestAnimationFrame(loop);
-    return () => {
-      if (simRAFRef.current != null) cancelAnimationFrame(simRAFRef.current);
+    const startLoop = () => {
+      if (
+        simRAFRef.current == null &&
+        isVisibleRef.current &&
+        !document.hidden
+      ) {
+        simRAFRef.current = requestAnimationFrame(loop);
+      }
     };
-  }, [autoAnimate, gridSize, prefersReducedMotion, tiltAt]);
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = Boolean(entry?.isIntersecting);
+        if (entry?.isIntersecting) startLoop();
+        else {
+          stopLoop();
+          resetAll();
+        }
+      },
+      { rootMargin: "100px 0px", threshold: 0.01 },
+    );
+    observer.observe(scene);
+
+    const handleVisibility = () => {
+      if (document.hidden) stopLoop();
+      else startLoop();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    startLoop();
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", handleVisibility);
+      stopLoop();
+    };
+  }, [autoAnimate, gridSize, prefersReducedMotion, resetAll, tiltAt]);
 
   useEffect(() => {
     const element = sceneRef.current;
@@ -393,7 +466,6 @@ const Cubes = ({
       element.removeEventListener("touchcancel", onTouchCancel);
 
       if (rafRef.current != null) cancelAnimationFrame(rafRef.current);
-      if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
       gsap.killTweensOf(element.querySelectorAll(".cube, .cube-face"));
     };
   }, [
