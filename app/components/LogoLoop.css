@@ -1,11 +1,11 @@
 .nrv-logoloop {
   --nrv-logoloop-gap: 32px;
   --nrv-logoloop-logo-height: 28px;
-  --nrv-logoloop-fade-color-auto: #cbab70;
+  --nrv-logoloop-fade-color-auto: #f6f8f9;
   position: relative;
   max-width: 100%;
   overflow: hidden;
-  color: #16241f;
+  color: #102a38;
 }
 
 .nrv-logoloop--vertical {
@@ -100,7 +100,7 @@
 .nrv-logoloop--scale-hover .nrv-logoloop__item:hover .nrv-logoloop__node,
 .nrv-logoloop--scale-hover .nrv-logoloop__item:focus-within img,
 .nrv-logoloop--scale-hover .nrv-logoloop__item:focus-within .nrv-logoloop__node {
-  color: #2b6b6d;
+  color: #356b8d;
   transform: scale(1.12);
   transform-origin: center;
 }
@@ -122,7 +122,7 @@
 }
 
 .nrv-logoloop__link:focus-visible {
-  outline: 3px solid #2b6b6d;
+  outline: 3px solid #356b8d;
   outline-offset: 4px;
 }
 
@@ -203,7 +203,7 @@
   overflow-x: auto;
   overflow-y: hidden;
   overscroll-behavior-inline: contain;
-  scrollbar-color: #2b6b6d transparent;
+  scrollbar-color: #356b8d transparent;
   scrollbar-width: thin;
 }
 
@@ -242,7 +242,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-inline: contain;
-    scrollbar-color: #2b6b6d transparent;
+    scrollbar-color: #356b8d transparent;
     scrollbar-width: thin;
   }
 

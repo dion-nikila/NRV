@@ -13,9 +13,9 @@ const DEFAULT_ITEMS = ["Overview", "Components", "Animations", "Showcase"];
 
 export default function LineSidebar({
   items = DEFAULT_ITEMS,
-  accentColor = "#9FE1CB",
-  textColor = "#F4EAD9",
-  markerColor = "rgba(244, 234, 217, 0.24)",
+  accentColor = "#356B8D",
+  textColor = "#405864",
+  markerColor = "rgba(16, 42, 56, 0.2)",
   showIndex = true,
   showMarker = true,
   proximityRadius = 100,

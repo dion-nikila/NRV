@@ -3,7 +3,7 @@ import { headers } from "next/headers";
 import "./globals.css";
 
 export const viewport: Viewport = {
-  themeColor: "#CBAB70",
+  themeColor: "#F6F8F9",
   colorScheme: "light",
 };
 
@@ -17,7 +17,7 @@ export async function generateMetadata(): Promise<Metadata> {
     requestHeaders.get("x-forwarded-proto") ??
     (host.startsWith("localhost") ? "http" : "https");
   const origin = `${protocol}://${host}`;
-  const socialImage = new URL("/og-v2.png", origin).toString();
+  const socialImage = new URL("/og-v3.png", origin).toString();
 
   return {
     title: "NRV — Software, resolved",

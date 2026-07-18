@@ -2,16 +2,21 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #cbab70;
-  --paper-shadow: #ad8a52;
-  --ink: #16241f;
-  --ink-secondary: #3a2e1e;
-  --teal: #2b6b6d;
-  --teal-light: #9fe1cb;
-  --rust: #a8543c;
-  --cream: #f4ead9;
-  --hairline-dark: rgba(22, 36, 31, 0.22);
-  --hairline-light: rgba(244, 234, 217, 0.18);
+  --paper: #f6f8f9;
+  --paper-shadow: #d7e0e6;
+  --ink: #102a38;
+  --ink-secondary: #405864;
+  --teal: #356b8d;
+  --teal-light: #badaf7;
+  --rust: #315f7b;
+  --cream: #ffffff;
+  --blue-mid: #a9cde8;
+  --blue-pale: #ddebf5;
+  --silver: #c6cdd2;
+  --silver-light: #e5e9ec;
+  --precision: #183e50;
+  --hairline-dark: rgba(16, 42, 56, 0.18);
+  --hairline-light: rgba(255, 255, 255, 0.22);
   --font-display: "Fraunces", Georgia, serif;
   --font-body: "Inter", Arial, sans-serif;
   --content: min(1280px, calc(100% - 80px));
@@ -85,7 +90,7 @@ a {
   min-height: max(760px, 100svh);
   overflow: clip;
   background:
-    radial-gradient(circle at 92% 12%, rgba(244, 234, 217, 0.38), transparent 24%),
+    radial-gradient(circle at 88% 12%, rgba(186, 218, 247, 0.72), transparent 32%),
     var(--paper);
 }
 
@@ -100,8 +105,8 @@ a {
   border-radius: 50%;
   pointer-events: none;
   background:
-    radial-gradient(circle at 35% 35%, rgba(43, 107, 109, 0.32), transparent 42%),
-    radial-gradient(circle at 65% 52%, rgba(168, 84, 60, 0.18), transparent 45%);
+    radial-gradient(circle at 35% 35%, rgba(53, 107, 141, 0.26), transparent 42%),
+    radial-gradient(circle at 65% 52%, rgba(49, 95, 123, 0.14), transparent 45%);
   filter: blur(50px);
 }
 
@@ -128,8 +133,8 @@ a {
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, rgba(203, 171, 112, 0.42) 0%, rgba(203, 171, 112, 0.05) 58%, rgba(22, 36, 31, 0.08) 100%),
-    linear-gradient(180deg, rgba(203, 171, 112, 0.12) 0%, transparent 70%, rgba(22, 36, 31, 0.18) 100%);
+    radial-gradient(ellipse at 50% 50%, rgba(246, 248, 249, 0.92) 0%, rgba(246, 248, 249, 0.68) 31%, rgba(246, 248, 249, 0.16) 65%, transparent 83%),
+    linear-gradient(180deg, rgba(246, 248, 249, 0.04) 0%, transparent 70%, rgba(16, 42, 56, 0.1) 100%);
 }
 
 .hero-layout {
@@ -159,10 +164,14 @@ a {
   text-wrap: balance;
 }
 
+.contact-section .section-kicker--light {
+  color: var(--ink);
+}
+
 .hero h1 {
   font-size: clamp(4.8rem, 8.5vw, 9rem);
   line-height: 0.83;
-  text-shadow: 0 2px 34px rgba(203, 171, 112, 0.74);
+  text-shadow: 0 2px 34px rgba(246, 248, 249, 0.82);
 }
 
 .hero-title-lead,
@@ -202,7 +211,7 @@ a {
   margin: 30px auto 0;
   color: var(--ink-secondary);
   font-size: clamp(1rem, 1.3vw, 1.16rem);
-  text-shadow: 0 1px 18px rgba(203, 171, 112, 0.95);
+  text-shadow: 0 1px 18px rgba(246, 248, 249, 0.96);
 }
 
 .hero-actions {
@@ -240,23 +249,23 @@ a {
 .button--rust {
   background: var(--rust);
   color: var(--cream);
-  box-shadow: 0 10px 28px rgba(168, 84, 60, 0.24);
+  box-shadow: 0 10px 28px rgba(49, 95, 123, 0.24);
 }
 
 .button--rust:hover {
-  background: #914631;
+  background: #274d65;
 }
 
 .button--ghost {
-  border-color: rgba(22, 36, 31, 0.34);
-  background: rgba(203, 171, 112, 0.72);
+  border-color: rgba(16, 42, 56, 0.32);
+  background: rgba(246, 248, 249, 0.74);
   color: var(--ink);
   backdrop-filter: blur(8px);
 }
 
 .button--ghost:hover {
   border-color: var(--ink);
-  background: rgba(244, 234, 217, 0.48);
+  background: rgba(255, 255, 255, 0.88);
 }
 
 .button--cream {
@@ -265,7 +274,7 @@ a {
 }
 
 .button--cream:hover {
-  background: #fff8ec;
+  background: var(--silver-light);
 }
 
 .button--large {
@@ -293,15 +302,15 @@ a {
 .section--ink {
   overflow: clip;
   background:
-    radial-gradient(circle at 10% 8%, rgba(43, 107, 109, 0.18), transparent 30%),
-    var(--ink);
-  color: var(--cream);
+    radial-gradient(circle at 10% 8%, rgba(255, 255, 255, 0.56), transparent 34%),
+    linear-gradient(145deg, var(--teal-light) 0%, var(--blue-mid) 100%);
+  color: var(--ink);
 }
 
 .section--paper {
   background:
-    radial-gradient(circle at 94% 6%, rgba(244, 234, 217, 0.23), transparent 23%),
-    linear-gradient(180deg, var(--paper) 0%, #c5a467 100%);
+    radial-gradient(circle at 94% 6%, rgba(186, 218, 247, 0.44), transparent 28%),
+    linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
   color: var(--ink);
 }
 
@@ -316,7 +325,10 @@ a {
   text-transform: uppercase;
 }
 
-.section-kicker--light,
+.section-kicker--light {
+  color: var(--teal);
+}
+
 .eyebrow--light {
   color: var(--teal-light);
 }
@@ -331,10 +343,10 @@ a {
   position: relative;
   min-height: 470px;
   overflow: hidden;
-  border: 1px solid rgba(159, 225, 203, 0.24);
+  border: 1px solid rgba(186, 218, 247, 0.3);
   border-radius: 34px 34px 116px 34px;
-  background: var(--ink);
-  box-shadow: 0 40px 100px rgba(58, 46, 30, 0.28);
+  background: var(--precision);
+  box-shadow: 0 40px 100px rgba(16, 42, 56, 0.2);
 }
 
 .precision-frame > canvas,
@@ -372,7 +384,7 @@ a {
 .precision-copy > p:not(.eyebrow) {
   max-width: 56ch;
   margin: 24px auto 0;
-  color: rgba(244, 234, 217, 0.75);
+  color: var(--silver-light);
   font-size: 1.05rem;
 }
 
@@ -386,9 +398,9 @@ a {
 
 .precision-points span {
   padding: 8px 14px;
-  border: 1px solid rgba(159, 225, 203, 0.24);
+  border: 1px solid rgba(186, 218, 247, 0.34);
   border-radius: 999px;
-  background: rgba(22, 36, 31, 0.52);
+  background: rgba(16, 42, 56, 0.58);
   color: var(--teal-light);
   font-size: 0.72rem;
   letter-spacing: 0.04em;
@@ -414,7 +426,7 @@ a {
 }
 
 .stack-heading > span {
-  color: rgba(58, 46, 30, 0.68);
+  color: var(--ink-secondary);
   font-size: 0.86rem;
 }
 
@@ -423,7 +435,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 34px;
-  color: rgba(22, 36, 31, 0.78);
+  color: rgba(16, 42, 56, 0.8);
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-weight: 600;
@@ -445,7 +457,7 @@ a {
   right: -250px;
   width: 620px;
   height: 620px;
-  border: 1px solid rgba(159, 225, 203, 0.11);
+  border: 1px solid rgba(16, 42, 56, 0.12);
   border-radius: 50%;
   content: "";
 }
@@ -471,15 +483,15 @@ a {
 .capabilities-heading > p:last-child {
   max-width: 34ch;
   margin: 0 0 6px;
-  color: rgba(244, 234, 217, 0.64);
+  color: var(--ink-secondary);
   font-size: 1rem;
 }
 
 .capabilities-interface {
   display: grid;
   grid-template-columns: minmax(310px, 0.72fr) minmax(0, 1.28fr);
-  border-top: 1px solid var(--hairline-light);
-  border-bottom: 1px solid var(--hairline-light);
+  border-top: 1px solid var(--hairline-dark);
+  border-bottom: 1px solid var(--hairline-dark);
 }
 
 .capabilities-interface .line-sidebar {
@@ -495,7 +507,8 @@ a {
   justify-content: flex-end;
   min-height: 520px;
   padding: clamp(52px, 7vw, 90px);
-  border-left: 1px solid var(--hairline-light);
+  border-left: 1px solid var(--hairline-dark);
+  background: rgba(246, 248, 249, 0.48);
 }
 
 .capability-detail__signal {
@@ -510,7 +523,7 @@ a {
 
 .capability-detail h3 {
   margin: 0 0 25px;
-  color: var(--teal-light);
+  color: var(--teal);
   font-size: 0.67rem;
   font-weight: 500;
   letter-spacing: 0.13em;
@@ -519,7 +532,7 @@ a {
 
 .capability-description {
   max-width: 16ch;
-  color: var(--cream);
+  color: var(--ink);
   font-family: var(--font-display);
   font-size: clamp(2.4rem, 4.1vw, 4.8rem);
   font-weight: 600;
@@ -530,7 +543,7 @@ a {
 
 .capability-scope {
   margin: 35px 0 0;
-  color: rgba(244, 234, 217, 0.5);
+  color: var(--ink-secondary);
   font-size: 0.74rem;
   letter-spacing: 0.04em;
 }
@@ -540,8 +553,8 @@ a {
 .process-section {
   overflow: clip;
   background:
-    radial-gradient(circle at 90% 8%, rgba(203, 171, 112, 0.58), transparent 30%),
-    var(--cream);
+    radial-gradient(circle at 90% 8%, rgba(186, 218, 247, 0.58), transparent 30%),
+    linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
 }
 
 .process-heading {
@@ -571,8 +584,10 @@ a {
   position: relative;
   padding: clamp(100px, 11vw, 154px) 0;
   overflow: hidden;
-  background: var(--rust);
-  color: var(--cream);
+  background:
+    radial-gradient(circle at 86% 14%, rgba(255, 255, 255, 0.34), transparent 30%),
+    var(--blue-mid);
+  color: var(--ink);
   scroll-margin-top: 92px;
 }
 
@@ -582,7 +597,7 @@ a {
   right: -130px;
   width: 520px;
   height: 520px;
-  border: 1px solid rgba(244, 234, 217, 0.14);
+  border: 1px solid rgba(16, 42, 56, 0.14);
   border-radius: 48% 52% 38% 62%;
   content: "";
   transform: rotate(18deg);
@@ -597,7 +612,7 @@ a {
 
 .contact-section h2 {
   max-width: 9ch;
-  color: var(--cream);
+  color: var(--ink);
   font-size: clamp(4.6rem, 8vw, 8.8rem);
   line-height: 0.86;
 }
@@ -609,12 +624,21 @@ a {
 .contact-action p {
   max-width: 42ch;
   margin: 0 0 31px;
-  color: rgba(244, 234, 217, 0.78);
+  color: var(--ink-secondary);
   font-size: 1.03rem;
 }
 
-.site-footer {
+.contact-section .button--cream {
   background: var(--ink);
+  color: var(--cream);
+}
+
+.contact-section .button--cream:hover {
+  background: var(--rust);
+}
+
+.site-footer {
+  background: linear-gradient(145deg, var(--precision) 0%, var(--ink) 100%);
   color: var(--cream);
 }
 
@@ -641,7 +665,7 @@ a {
 .footer-brand-row p {
   max-width: 31ch;
   margin: 0;
-  color: rgba(244, 234, 217, 0.55);
+  color: var(--silver);
   font-size: 0.9rem;
 }
 
@@ -658,7 +682,7 @@ a {
 
 .footer-email {
   width: max-content;
-  border-bottom: 1px solid rgba(244, 234, 217, 0.34);
+  border-bottom: 1px solid rgba(186, 218, 247, 0.42);
   font-family: var(--font-display);
   font-size: clamp(1.9rem, 3.4vw, 3.6rem);
   letter-spacing: -0.035em;
@@ -673,7 +697,7 @@ a {
 }
 
 .footer-links-row nav a {
-  color: rgba(244, 234, 217, 0.62);
+  color: var(--silver-light);
   font-size: 0.82rem;
 }
 
@@ -687,15 +711,22 @@ a {
   justify-content: space-between;
   gap: 24px;
   padding-top: 22px;
-  color: rgba(244, 234, 217, 0.38);
+  color: var(--silver);
   font-size: 0.7rem;
 }
 
 .button:focus-visible,
 a:focus-visible,
 button:focus-visible {
-  outline: 3px solid var(--teal-light);
+  outline: 3px solid var(--teal);
   outline-offset: 4px;
+}
+
+.precision-frame a:focus-visible,
+.precision-frame button:focus-visible,
+.site-footer a:focus-visible,
+.site-footer button:focus-visible {
+  outline-color: var(--teal-light);
 }
 
 @media (max-width: 1000px) {
@@ -743,8 +774,8 @@ button:focus-visible {
 
   .hero-wash {
     background:
-      radial-gradient(ellipse at 50% 52%, rgba(203, 171, 112, 0.96) 0%, rgba(203, 171, 112, 0.87) 28%, rgba(203, 171, 112, 0.52) 50%, rgba(203, 171, 112, 0.08) 74%, transparent 86%),
-      linear-gradient(180deg, rgba(203, 171, 112, 0.04) 0%, rgba(203, 171, 112, 0.02) 62%, rgba(22, 36, 31, 0.16) 100%);
+      radial-gradient(ellipse at 50% 52%, rgba(246, 248, 249, 0.96) 0%, rgba(246, 248, 249, 0.86) 28%, rgba(246, 248, 249, 0.5) 50%, rgba(246, 248, 249, 0.08) 74%, transparent 86%),
+      linear-gradient(180deg, rgba(246, 248, 249, 0.03) 0%, rgba(246, 248, 249, 0.02) 62%, rgba(16, 42, 56, 0.1) 100%);
   }
 
   .hero-layout {
@@ -879,7 +910,7 @@ button:focus-visible {
   .capability-detail {
     min-height: 360px;
     padding: 60px 0 34px;
-    border-top: 1px solid var(--hairline-light);
+    border-top: 1px solid var(--hairline-dark);
     border-left: 0;
   }
 

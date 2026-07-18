@@ -7,8 +7,8 @@
 .carousel-viewport {
   position: relative;
   overflow: hidden;
-  border-top: 1px solid rgba(22, 36, 31, 0.22);
-  border-bottom: 1px solid rgba(22, 36, 31, 0.22);
+  border-top: 1px solid rgba(16, 42, 56, 0.2);
+  border-bottom: 1px solid rgba(16, 42, 56, 0.2);
 }
 
 .carousel-track {
@@ -26,8 +26,8 @@
   overflow: hidden;
   border: 0;
   background:
-    radial-gradient(circle at 92% 12%, rgba(244, 234, 217, 0.24), transparent 28%),
-    var(--paper);
+    radial-gradient(circle at 92% 12%, rgba(255, 255, 255, 0.46), transparent 30%),
+    linear-gradient(135deg, var(--blue-pale) 0%, var(--blue-mid) 100%);
   color: var(--ink);
   cursor: grab;
 }
@@ -42,7 +42,7 @@
   bottom: -38%;
   width: 360px;
   height: 360px;
-  border: 1px solid rgba(43, 107, 109, 0.28);
+  border: 1px solid rgba(53, 107, 141, 0.28);
   border-radius: 50%;
   content: "";
 }
@@ -54,7 +54,7 @@
   flex-direction: column;
   justify-content: space-between;
   padding: clamp(30px, 4vw, 54px);
-  border-right: 1px solid rgba(22, 36, 31, 0.2);
+  border-right: 1px solid rgba(16, 42, 56, 0.18);
 }
 
 .carousel-icon-container {
@@ -187,7 +187,7 @@
   min-width: 88px;
   height: 46px;
   padding: 0 16px;
-  border: 1px solid rgba(22, 36, 31, 0.3);
+  border: 1px solid rgba(16, 42, 56, 0.28);
   border-radius: 999px;
   background: transparent;
   color: var(--ink);
@@ -227,7 +227,7 @@
   display: block;
   width: 22px;
   height: 2px;
-  background: rgba(22, 36, 31, 0.24);
+  background: rgba(16, 42, 56, 0.24);
   transition: width 160ms ease, background-color 160ms ease;
 }
 
@@ -260,7 +260,7 @@
     align-items: center;
     padding: 18px;
     border-right: 0;
-    border-bottom: 1px solid rgba(22, 36, 31, 0.18);
+    border-bottom: 1px solid rgba(16, 42, 56, 0.18);
   }
 
   .carousel-icon-container {

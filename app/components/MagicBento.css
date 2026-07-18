@@ -1,8 +1,8 @@
 .nrv-magic-bento {
-  --nrv-bento-ink: #16241f;
-  --nrv-bento-cream: #f4ead9;
-  --nrv-bento-teal-light: #9fe1cb;
-  --nrv-bento-border: rgba(244, 234, 217, 0.2);
+  --nrv-bento-ink: #183e50;
+  --nrv-bento-cream: #ffffff;
+  --nrv-bento-teal-light: #badaf7;
+  --nrv-bento-border: rgba(255, 255, 255, 0.2);
   position: relative;
   isolation: isolate;
   width: 100%;
@@ -41,8 +41,8 @@
   inset: 0;
   z-index: 0;
   background:
-    linear-gradient(90deg, rgba(43, 107, 109, 0.24), transparent 58%),
-    rgba(244, 234, 217, 0.02);
+    linear-gradient(90deg, rgba(53, 107, 141, 0.24), transparent 58%),
+    rgba(255, 255, 255, 0.02);
   content: "";
   opacity: 0;
   transform: translateX(-10%);
@@ -94,7 +94,7 @@
 .nrv-magic-bento__card-label {
   display: block;
   max-width: 32ch;
-  color: rgba(159, 225, 203, 0.72);
+  color: #badaf7;
   font-size: 0.68rem;
   font-weight: 500;
   letter-spacing: 0.055em;
@@ -118,7 +118,7 @@
 
 .nrv-magic-bento__card-description {
   max-width: 42ch;
-  color: rgba(244, 234, 217, 0.68);
+  color: #e5e9ec;
   font-size: 0.95rem;
   line-height: 1.62;
 }

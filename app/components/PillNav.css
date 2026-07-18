@@ -15,9 +15,9 @@
 .nrv-nav__mobile {
   width: min(1180px, 100%);
   margin: 0 auto;
-  border: 1px solid rgba(244, 234, 217, 0.17);
-  background: rgba(22, 36, 31, 0.94);
-  box-shadow: 0 18px 48px rgba(22, 36, 31, 0.2);
+  border: 1px solid rgba(16, 42, 56, 0.14);
+  background: rgba(246, 248, 249, 0.9);
+  box-shadow: 0 18px 48px rgba(16, 42, 56, 0.14);
   backdrop-filter: blur(18px);
   pointer-events: auto;
 }
@@ -67,7 +67,7 @@
   min-height: 44px;
   padding: 0 15px;
   border-radius: 11px;
-  color: rgba(244, 234, 217, 0.68);
+  color: #405864;
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.025em;
@@ -80,7 +80,7 @@
   bottom: 7px;
   left: 15px;
   height: 1px;
-  background: #9fe1cb;
+  background: #356b8d;
   content: "";
   opacity: 0;
   transform: scaleX(0.4);
@@ -90,8 +90,8 @@
 .nrv-nav__link:hover,
 .nrv-nav__link:focus-visible,
 .nrv-nav__link.is-active {
-  color: #f4ead9;
-  background: rgba(244, 234, 217, 0.06);
+  color: #102a38;
+  background: rgba(186, 218, 247, 0.34);
 }
 
 .nrv-nav__link:hover::after,
@@ -107,8 +107,8 @@
 
 .nrv-nav__list li:last-child .nrv-nav__link {
   padding-inline: 19px;
-  background: #a8543c;
-  color: #f4ead9;
+  background: #102a38;
+  color: #ffffff;
 }
 
 .nrv-nav__list li:last-child .nrv-nav__link::after {
@@ -117,7 +117,7 @@
 
 .nrv-nav__list li:last-child .nrv-nav__link:hover,
 .nrv-nav__list li:last-child .nrv-nav__link:focus-visible {
-  background: #914631;
+  background: #315f7b;
 }
 
 .nrv-nav__menu-button,
@@ -134,7 +134,7 @@
   border: 0;
   border-radius: 10px;
   background: transparent;
-  color: #f4ead9;
+  color: #102a38;
   cursor: pointer;
 }
 
@@ -153,7 +153,7 @@
   display: block;
   width: 18px;
   height: 1px;
-  background: #cbab70;
+  background: #356b8d;
   transition: transform 180ms ease;
 }
 
@@ -176,7 +176,7 @@
 }
 
 .nrv-nav__mobile-list li + li {
-  border-top: 1px solid rgba(244, 234, 217, 0.1);
+  border-top: 1px solid rgba(16, 42, 56, 0.1);
 }
 
 .nrv-nav__mobile-link {
@@ -185,7 +185,7 @@
   justify-content: space-between;
   min-height: 58px;
   padding: 0 18px;
-  color: rgba(244, 234, 217, 0.76);
+  color: #405864;
   font-size: 0.95rem;
 }
 
@@ -193,14 +193,14 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: #9fe1cb;
+  background: #356b8d;
   content: "";
   opacity: 0;
 }
 
 .nrv-nav__mobile-link.is-active,
 .nrv-nav__mobile-link:hover {
-  color: #f4ead9;
+  color: #102a38;
 }
 
 .nrv-nav__mobile-link.is-active::after {
@@ -210,8 +210,8 @@
 .nrv-nav__mobile-email {
   display: block;
   padding: 17px 18px 19px;
-  border-top: 1px solid rgba(244, 234, 217, 0.14);
-  color: #9fe1cb;
+  border-top: 1px solid rgba(16, 42, 56, 0.14);
+  color: #356b8d;
   font-family: "Fraunces", Georgia, serif;
   font-size: 1.15rem;
 }

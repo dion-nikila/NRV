@@ -3,14 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 
 const LetterGlitch = ({
-  glitchColors = ["#2b4539", "#61dca3", "#61b3dc"],
+  glitchColors = ["#102a38", "#356b8d", "#badaf7"],
   className = "",
   glitchSpeed = 50,
   centerVignette = false,
   outerVignette = true,
   smooth = true,
   characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$&*()-_+=/[]{};:<>.,0123456789",
-  backgroundColor = "#000000",
+  backgroundColor = "#183e50",
   style,
   ariaLabel,
 }) => {
@@ -276,7 +276,7 @@ const LetterGlitch = ({
     inset: 0,
     pointerEvents: "none",
     background:
-      "radial-gradient(circle, rgba(22,36,31,0) 58%, rgba(22,36,31,0.98) 100%)",
+      "radial-gradient(circle, rgba(24,62,80,0) 58%, rgba(16,42,56,0.98) 100%)",
   };
 
   const centerVignetteStyle = {
@@ -284,7 +284,7 @@ const LetterGlitch = ({
     inset: 0,
     pointerEvents: "none",
     background:
-      "radial-gradient(circle, rgba(22,36,31,0.88) 0%, rgba(22,36,31,0) 62%)",
+      "radial-gradient(circle, rgba(16,42,56,0.82) 0%, rgba(16,42,56,0) 62%)",
   };
 
   return (

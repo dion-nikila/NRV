@@ -6,29 +6,29 @@ import './MagicBento.css';
 
 const DEFAULT_PARTICLE_COUNT = 12;
 const DEFAULT_SPOTLIGHT_RADIUS = 300;
-const DEFAULT_GLOW_COLOR = '43, 107, 109';
+const DEFAULT_GLOW_COLOR = '53, 107, 141';
 
 const cardData = [
   {
-    color: '#16241F',
+    color: '#183E50',
     title: 'Web platforms',
     description: 'Fast, considered web products built for real use and straightforward change.',
     label: 'Customer portals, web applications, product sites'
   },
   {
-    color: '#16241F',
+    color: '#183E50',
     title: 'Operations software',
     description: 'Clear internal systems for work that has outgrown spreadsheets and fragile handoffs.',
     label: 'Internal tools, workflow systems, dashboards'
   },
   {
-    color: '#16241F',
+    color: '#183E50',
     title: 'Mobile applications',
     description: 'Focused apps designed around the moments people actually reach for them.',
     label: 'iOS and Android, cross-platform, offline flows'
   },
   {
-    color: '#16241F',
+    color: '#183E50',
     title: 'Product design and ongoing care',
     description: 'Product direction, interface design, testing, launch, and the work that follows.',
     label: 'Strategy, UX and UI, QA and iteration'

@@ -210,9 +210,9 @@ export default function NRVSite() {
               gridSize={isMobile ? 6 : 10}
               maxAngle={35}
               radius={3}
-              faceColor="#CBAB70"
-              borderStyle="1px solid rgba(43,107,109,0.4)"
-              rippleColor="#2B6B6D"
+              faceColor="#A9CDE8"
+              borderStyle="1px solid rgba(16,42,56,0.3)"
+              rippleColor="#356B8D"
               rippleOnClick
               autoAnimate={!reducedMotion}
             />
@@ -242,12 +242,12 @@ export default function NRVSite() {
           <div className="section-inner">
             <div className="precision-frame" data-resolve>
               <LetterGlitch
-                glitchColors={["#16241F", "#2B6B6D", "#9FE1CB"]}
+                glitchColors={["#102A38", "#356B8D", "#BADAF7"]}
                 glitchSpeed={70}
                 centerVignette
                 outerVignette
                 smooth
-                backgroundColor="#16241F"
+                backgroundColor="#183E50"
               />
               <div className="precision-copy">
                 <p className="eyebrow eyebrow--light">Under the hood</p>
@@ -275,7 +275,7 @@ export default function NRVSite() {
                 logoHeight={34}
                 gap={52}
                 fadeOut
-                fadeOutColor="#CBAB70"
+                fadeOutColor="#F6F8F9"
                 scaleOnHover
                 ariaLabel="Technology stack"
               />
@@ -294,9 +294,9 @@ export default function NRVSite() {
             <div className="capabilities-interface" data-resolve>
               <LineSidebar
                 items={CAPABILITIES.map((item) => item.title)}
-                accentColor="#9FE1CB"
-                textColor="rgba(244, 234, 217, 0.58)"
-                markerColor="rgba(244, 234, 217, 0.2)"
+                accentColor="#356B8D"
+                textColor="rgba(16, 42, 56, 0.66)"
+                markerColor="rgba(16, 42, 56, 0.22)"
                 showIndex={false}
                 showMarker
                 proximityRadius={100}

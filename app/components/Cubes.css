@@ -2,8 +2,8 @@
   --col-gap: 5%;
   --row-gap: 5%;
   --cube-perspective: 99999999px;
-  --cube-face-border: 1px solid #fff;
-  --cube-face-bg: #120f17;
+  --cube-face-border: 1px solid rgba(16, 42, 56, 0.3);
+  --cube-face-bg: #a9cde8;
   --cube-face-shadow: none;
 
   position: relative;

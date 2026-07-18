@@ -45,12 +45,14 @@ npm test
 
 | Token | Value |
 | --- | --- |
-| Paper | `#CBAB70` |
-| Paper shadow | `#AD8A52` |
-| Ink | `#16241F` |
-| Teal | `#2B6B6D` |
-| Teal light | `#9FE1CB` |
-| Rust | `#A8543C` |
-| Cream | `#F4EAD9` |
+| Paper | `#F6F8F9` |
+| Paper shadow | `#D7E0E6` |
+| Ink | `#102A38` |
+| Slate | `#405864` |
+| Strong blue | `#356B8D` |
+| Coral blue | `#BADAF7` |
+| Mid blue | `#A9CDE8` |
+| Silver | `#C6CDD2` |
+| White | `#FFFFFF` |
 
 Display typography is Fraunces; body and interface typography is Inter.
