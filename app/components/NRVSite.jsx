@@ -175,6 +175,19 @@ export default function NRVSite() {
 
       <div id="main-content">
         <section className="hero" aria-labelledby="hero-title">
+          <div className="hero-cubes" aria-hidden="true">
+            <Cubes
+              gridSize={isCompact ? 6 : 9}
+              maxAngle={isCompact ? 9 : 16}
+              radius={isCompact ? 2 : 2.8}
+              faceColor="#CBAB70"
+              borderStyle="1px solid rgba(43,107,109,0.58)"
+              rippleOnClick={false}
+              autoAnimate={false}
+            />
+          </div>
+          <div className="hero-veil" aria-hidden="true" />
+
           <div className="hero-layout">
             <div className="hero-copy" data-reveal>
               <h1 id="hero-title">
@@ -186,38 +199,18 @@ export default function NRVSite() {
               </p>
               <div className="hero-actions">
                 <a className="button button--rust" href="#contact">Start a project</a>
-                <a className="text-link" href="#work">View our work</a>
               </div>
             </div>
-
-            <figure className="hero-figure" aria-label="An interactive architectural grid representing a system taking shape">
-              <div className="hero-sculpture" aria-hidden="true">
-                <div className="hero-cubes">
-                  <Cubes
-                    gridSize={isCompact ? 5 : 6}
-                    maxAngle={isCompact ? 5 : 9}
-                    radius={1.8}
-                    faceColor="#CBAB70"
-                    borderStyle="1px solid rgba(43,107,109,0.78)"
-                    rippleOnClick={false}
-                    autoAnimate={false}
-                  />
-                </div>
-                <span className="sculpture-square sculpture-square--teal" />
-                <span className="sculpture-square sculpture-square--rust" />
-              </div>
-            </figure>
           </div>
         </section>
 
         <section id="about" className="studio-statement" aria-labelledby="studio-title">
           <div className="section-inner studio-statement__grid" data-reveal>
-            <p className="section-note">NRV is a small, independent software studio.</p>
             <h2 id="studio-title">
-              Software should fit the work—<span>not make the work fit the software.</span>
+              We work where <span>off‑the‑shelf software stops fitting.</span>
             </h2>
             <p className="studio-statement__body">
-              We work closely with teams to understand the real problem, shape the right system, and build it with care.
+              NRV is a small software studio. We design and build products around the way a team actually works.
             </p>
           </div>
         </section>
