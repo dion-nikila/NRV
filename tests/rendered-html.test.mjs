@@ -32,19 +32,15 @@ test("server-renders the NRV studio site", async () => {
 
   const html = await response.text();
   assert.match(html, /<title>NRV — Software, resolved<\/title>/i);
-  assert.match(html, /Software built around/i);
-  assert.match(html, /What we build\./i);
+  assert.match(html, /Independent software studio/i);
+  assert.match(html, /Software, finished properly\./i);
   assert.match(html, /Built to be precise\./i);
-  assert.match(html, /Tools are choices, not trophies\./i);
-  assert.match(html, /How we work\./i);
   assert.match(html, /Bring us the rough sketch\./i);
-  assert.match(html, /hello@nrv\.studio/i);
   assert.match(html, /\/og\.png/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
-  assert.doesNotMatch(html, /Made for the messy middle|Fragmented tools|Scattered decisions/i);
 });
 
-test("keeps the finished brand system and restrained component suite wired", async () => {
+test("keeps the finished brand system and component suite wired", async () => {
   const [page, layout, globals, site, packageJson] = await Promise.all([
     readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
@@ -64,13 +60,12 @@ test("keeps the finished brand system and restrained component suite wired", asy
   for (const component of [
     "Cubes",
     "LetterGlitch",
+    "LogoLoop",
+    "MagicBento",
     "PillNav",
   ]) {
     assert.match(site, new RegExp(`import ${component} from`));
   }
-
-  assert.doesNotMatch(site, /import (LogoLoop|MagicBento) from/);
-  assert.match(site, /TypeScript[\s\S]*React[\s\S]*Next\.js[\s\S]*Cloudflare/);
 
   assert.match(packageJson, /"gsap":/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);

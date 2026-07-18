@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 88 56" role="img" aria-labelledby="title">
   <title id="title">NRV</title>
-  <text x="2" y="40" fill="#CBAB70" font-family="Fraunces, Georgia, serif" font-size="38" font-weight="600" letter-spacing="-2">NRV</text>
-  <circle cx="82" cy="15" r="3" fill="#9FE1CB"/>
+  <rect width="88" height="56" rx="22" fill="#CBAB70"/>
+  <text x="44" y="38" fill="#16241F" font-family="Fraunces, Georgia, serif" font-size="30" font-weight="600" text-anchor="middle" letter-spacing="-1">NRV</text>
 </svg>

@@ -11,51 +11,39 @@ const DEFAULT_GLOW_COLOR = '43, 107, 109';
 const cardData = [
   {
     color: '#16241F',
-    kind: 'platform',
     title: 'Web platforms',
-    description: 'Reliable browser products with clear structure and room to grow.',
-    label: 'Platforms',
-    tags: ['Portals', 'Products', 'Admin']
+    description: 'Reliable products built for the browser.',
+    label: 'Platforms'
   },
   {
     color: '#16241F',
-    kind: 'operations',
     title: 'Ops software',
-    description: 'BayFlow — multi-tenant operations software for premium automotive service businesses.',
-    label: 'BayFlow',
-    tags: ['Workflow', 'Scheduling', 'Reporting']
+    description: 'BayFlow for premium automotive service operations.',
+    label: 'BayFlow'
   },
   {
     color: '#16241F',
-    kind: 'mobile',
     title: 'Mobile apps',
-    description: 'Focused mobile experiences built around the task in hand.',
-    label: 'Mobile',
-    tags: ['Field work', 'Mobile UX', 'Alerts']
+    description: 'Focused apps that feel native in the hand.',
+    label: 'Mobile'
   },
   {
     color: '#16241F',
-    kind: 'tools',
     title: 'Custom tools',
-    description: 'Purpose-built tools for the work generic software misses.',
-    label: 'Systems',
-    tags: ['Automation', 'Integrations', 'Data']
+    description: 'Purpose-built software for uncommon work.',
+    label: 'Systems'
   },
   {
     color: '#16241F',
-    kind: 'design',
     title: 'Product design',
-    description: 'From rough flow to tested interface and reusable system.',
-    label: 'Design',
-    tags: ['Flows', 'Prototypes', 'Systems']
+    description: 'Clear interfaces shaped around real habits.',
+    label: 'Design'
   },
   {
     color: '#16241F',
-    kind: 'support',
     title: 'Ongoing support',
-    description: 'Fixes, improvements, and steady care after launch.',
-    label: 'Support',
-    tags: ['QA', 'Performance', 'Iteration']
+    description: 'Careful maintenance as products evolve.',
+    label: 'Support'
   }
 ];
 
@@ -102,23 +90,18 @@ const useDisableMotionEffects = () => {
   useEffect(() => {
     const mobileQuery = window.matchMedia('(max-width: 768px)');
     const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const coarsePointerQuery = window.matchMedia('(hover: none), (pointer: coarse)');
 
     const updatePreference = () => {
-      setDisableMotionEffects(
-        mobileQuery.matches || reducedMotionQuery.matches || coarsePointerQuery.matches
-      );
+      setDisableMotionEffects(mobileQuery.matches || reducedMotionQuery.matches);
     };
 
     updatePreference();
     mobileQuery.addEventListener('change', updatePreference);
     reducedMotionQuery.addEventListener('change', updatePreference);
-    coarsePointerQuery.addEventListener('change', updatePreference);
 
     return () => {
       mobileQuery.removeEventListener('change', updatePreference);
       reducedMotionQuery.removeEventListener('change', updatePreference);
-      coarsePointerQuery.removeEventListener('change', updatePreference);
     };
   }, []);
 
@@ -387,11 +370,6 @@ const GlobalSpotlight = ({
   useEffect(() => {
     if (disableAnimations || !gridRef.current || !enabled) return undefined;
 
-    const grid = gridRef.current;
-    const section = grid.closest('.nrv-magic-bento');
-    if (!section) return undefined;
-    const cards = Array.from(grid.querySelectorAll('.nrv-magic-bento__card'));
-
     const spotlight = document.createElement('div');
     spotlight.className = 'nrv-magic-bento__global-spotlight';
     spotlight.setAttribute('aria-hidden', 'true');
@@ -411,24 +389,33 @@ const GlobalSpotlight = ({
       );
       z-index: 20;
       opacity: 0;
-      left: 0;
-      top: 0;
-      transform: translate3d(-400px, -400px, 0);
+      transform: translate(-50%, -50%);
       mix-blend-mode: screen;
-      transition: opacity 160ms ease;
     `;
     document.body.appendChild(spotlight);
     spotlightRef.current = spotlight;
 
-    let pointerX = 0;
-    let pointerY = 0;
-    let frame = null;
-    const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
+    const handleMouseMove = event => {
+      if (!spotlightRef.current || !gridRef.current) return;
 
-    const updateSpotlight = () => {
-      frame = null;
-      if (!spotlightRef.current) return;
+      const section = gridRef.current.closest('.nrv-magic-bento');
+      const rect = section?.getBoundingClientRect();
+      const mouseInside = Boolean(
+        rect &&
+          event.clientX >= rect.left &&
+          event.clientX <= rect.right &&
+          event.clientY >= rect.top &&
+          event.clientY <= rect.bottom
+      );
+      const cards = gridRef.current.querySelectorAll('.nrv-magic-bento__card');
 
+      if (!mouseInside) {
+        gsap.to(spotlightRef.current, { opacity: 0, duration: 0.3, ease: 'power2.out' });
+        cards.forEach(card => card.style.setProperty('--nrv-bento-glow-intensity', '0'));
+        return;
+      }
+
+      const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
       let minDistance = Infinity;
 
       cards.forEach(card => {
@@ -436,7 +423,7 @@ const GlobalSpotlight = ({
         const centerX = cardRect.left + cardRect.width / 2;
         const centerY = cardRect.top + cardRect.height / 2;
         const distance =
-          Math.hypot(pointerX - centerX, pointerY - centerY) -
+          Math.hypot(event.clientX - centerX, event.clientY - centerY) -
           Math.max(cardRect.width, cardRect.height) / 2;
         const effectiveDistance = Math.max(0, distance);
         minDistance = Math.min(minDistance, effectiveDistance);
@@ -448,11 +435,15 @@ const GlobalSpotlight = ({
           glowIntensity = (fadeDistance - effectiveDistance) / (fadeDistance - proximity);
         }
 
-        updateCardGlowProperties(card, pointerX, pointerY, glowIntensity, spotlightRadius);
+        updateCardGlowProperties(card, event.clientX, event.clientY, glowIntensity, spotlightRadius);
       });
 
-      spotlightRef.current.style.transform =
-        `translate3d(${pointerX - 400}px, ${pointerY - 400}px, 0)`;
+      gsap.to(spotlightRef.current, {
+        left: event.clientX,
+        top: event.clientY,
+        duration: 0.1,
+        ease: 'power2.out'
+      });
 
       const targetOpacity =
         minDistance <= proximity
@@ -461,36 +452,30 @@ const GlobalSpotlight = ({
             ? ((fadeDistance - minDistance) / (fadeDistance - proximity)) * 0.8
             : 0;
 
-      spotlightRef.current.style.opacity = String(targetOpacity);
-    };
-
-    const handleMouseMove = event => {
-      pointerX = event.clientX;
-      pointerY = event.clientY;
-      if (frame == null) frame = requestAnimationFrame(updateSpotlight);
+      gsap.to(spotlightRef.current, {
+        opacity: targetOpacity,
+        duration: targetOpacity > 0 ? 0.2 : 0.5,
+        ease: 'power2.out'
+      });
     };
 
     const handleMouseLeave = () => {
-      if (frame != null) {
-        cancelAnimationFrame(frame);
-        frame = null;
-      }
-      cards.forEach(card => {
+      gridRef.current?.querySelectorAll('.nrv-magic-bento__card').forEach(card => {
         card.style.setProperty('--nrv-bento-glow-intensity', '0');
       });
       if (spotlightRef.current) {
-        spotlightRef.current.style.opacity = '0';
+        gsap.to(spotlightRef.current, { opacity: 0, duration: 0.3, ease: 'power2.out' });
       }
     };
 
-    section.addEventListener('pointermove', handleMouseMove, { passive: true });
-    section.addEventListener('pointerleave', handleMouseLeave);
+    document.addEventListener('mousemove', handleMouseMove);
+    document.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      section.removeEventListener('pointermove', handleMouseMove);
-      section.removeEventListener('pointerleave', handleMouseLeave);
-      if (frame != null) cancelAnimationFrame(frame);
+      document.removeEventListener('mousemove', handleMouseMove);
+      document.removeEventListener('mouseleave', handleMouseLeave);
       if (spotlightRef.current) {
+        gsap.killTweensOf(spotlightRef.current);
         spotlightRef.current.remove();
         spotlightRef.current = null;
       }
@@ -558,18 +543,11 @@ const MagicBento = ({
               enableMagnetism={enableMagnetism}
             >
               <div className="nrv-magic-bento__card-header">
-                <span className="nrv-magic-bento__card-label"><i aria-hidden="true" />{card.label}</span>
-                <span className="nrv-magic-bento__card-signal" aria-hidden="true">↗</span>
-              </div>
-              <div className="nrv-magic-bento__visual" data-kind={card.kind} aria-hidden="true">
-                <span /><span /><span /><span /><span /><span />
+                <span className="nrv-magic-bento__card-label">{card.label}</span>
               </div>
               <div className="nrv-magic-bento__card-content">
                 <h3 className="nrv-magic-bento__card-title">{card.title}</h3>
                 <p className="nrv-magic-bento__card-description">{card.description}</p>
-                <div className="nrv-magic-bento__card-tags" aria-label={`${card.title} capabilities`}>
-                  {card.tags.map(tag => <span key={tag}>{tag}</span>)}
-                </div>
               </div>
             </ParticleCard>
           );

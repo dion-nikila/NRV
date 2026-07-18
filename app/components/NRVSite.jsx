@@ -1,75 +1,47 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Cubes from "./Cubes";
 import LetterGlitch from "./LetterGlitch";
+import LogoLoop from "./LogoLoop";
+import MagicBento from "./MagicBento";
 import PillNav from "./PillNav";
 
+const BUILD_WORDS = [
+  "web platforms",
+  "ops software",
+  "mobile apps",
+  "custom tools",
+];
+
 const NAV_ITEMS = [
+  { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },
-  { label: "About", href: "#about" },
-  { label: "Process", href: "#process" },
+  { label: "Products", href: "#products" },
   { label: "Contact", href: "#contact" },
 ];
 
-const SERVICES = [
-  {
-    number: "01",
-    title: "Web platforms",
-    description:
-      "Focused digital products built to make complex work feel direct and dependable.",
-  },
-  {
-    number: "02",
-    title: "Internal and operations software",
-    description:
-      "Purpose-built systems that replace scattered tools, handoffs, and workarounds.",
-  },
-  {
-    number: "03",
-    title: "Mobile applications",
-    description:
-      "Useful, resilient experiences designed around what people need while in motion.",
-  },
-  {
-    number: "04",
-    title: "Product design and ongoing support",
-    description:
-      "Clear product direction, thoughtful interfaces, and steady improvement after launch.",
-  },
+const STACK = [
+  { node: <span className="stack-mark">Next.js</span>, title: "Next.js" },
+  { node: <span className="stack-mark">React</span>, title: "React" },
+  { node: <span className="stack-mark">TypeScript</span>, title: "TypeScript" },
+  { node: <span className="stack-mark">Node</span>, title: "Node.js" },
+  { node: <span className="stack-mark">Postgres</span>, title: "PostgreSQL" },
+  { node: <span className="stack-mark">Cloudflare</span>, title: "Cloudflare" },
+  { node: <span className="stack-mark">Figma</span>, title: "Figma" },
+  { node: <span className="stack-mark">GSAP</span>, title: "GSAP" },
 ];
 
-const PROCESS = [
-  {
-    number: "01",
-    title: "Start with real work",
-    description: "We learn how the work happens now, including the parts nobody documented.",
-  },
-  {
-    number: "02",
-    title: "Define what matters",
-    description: "We separate the essential problem from everything that can wait.",
-  },
-  {
-    number: "03",
-    title: "Build the clearest version",
-    description: "We design and ship the smallest complete system that solves the real need.",
-  },
-  {
-    number: "04",
-    title: "Make it easier to evolve",
-    description: "We leave the product stable, understandable, and ready for what comes next.",
-  },
-];
-
-const ACTIVE_SECTIONS = ["services", "about", "process", "contact"];
-const GLITCH_COLORS = ["#16241F", "#2B6B6D", "#9FE1CB"];
-const GLITCH_CHARACTERS = "NRV01{}[]<>/";
+function SectionIndex({ children }) {
+  return <span className="section-index" aria-hidden="true">{children}</span>;
+}
 
 export default function NRVSite() {
   const rootRef = useRef(null);
-  const [isCompact, setIsCompact] = useState(false);
+  const cursorRef = useRef(null);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [activeHref, setActiveHref] = useState("");
 
@@ -78,7 +50,7 @@ export default function NRVSite() {
     const motionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
     const syncPreferences = () => {
-      setIsCompact(viewportQuery.matches);
+      setIsMobile(viewportQuery.matches);
       setReducedMotion(motionQuery.matches);
     };
 
@@ -93,59 +65,60 @@ export default function NRVSite() {
   }, []);
 
   useEffect(() => {
-    const sections = ACTIVE_SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
-    let frame = null;
+    if (reducedMotion) return undefined;
+    const timer = window.setInterval(() => {
+      setWordIndex((current) => (current + 1) % BUILD_WORDS.length);
+    }, 2600);
+    return () => window.clearInterval(timer);
+  }, [reducedMotion]);
 
-    const updateActiveSection = () => {
-      frame = null;
-      const marker = Math.min(180, window.innerHeight * 0.25);
-      const current = sections.find((section) => {
-        const rect = section.getBoundingClientRect();
-        return rect.top <= marker && rect.bottom > marker;
-      });
+  useEffect(() => {
+    const sections = ["services", "products", "work", "contact"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
 
-      setActiveHref(current?.id ? `#${current.id}` : "");
-    };
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target?.id) setActiveHref(`#${visible.target.id}`);
+      },
+      { rootMargin: "-28% 0px -58%", threshold: [0, 0.1, 0.3] },
+    );
 
-    const requestUpdate = () => {
-      if (frame == null) frame = requestAnimationFrame(updateActiveSection);
-    };
-
-    updateActiveSection();
-    window.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate, { passive: true });
-
-    return () => {
-      window.removeEventListener("scroll", requestUpdate);
-      window.removeEventListener("resize", requestUpdate);
-      if (frame != null) cancelAnimationFrame(frame);
-    };
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
     if (reducedMotion || !rootRef.current) return undefined;
 
+    let scrollTrigger;
     let context;
     let disposed = false;
 
     const setup = async () => {
-      const { ScrollTrigger } = await import("gsap/ScrollTrigger");
+      const scrollTriggerModule = await import("gsap/ScrollTrigger");
       if (disposed) return;
-      gsap.registerPlugin(ScrollTrigger);
+      scrollTrigger = scrollTriggerModule.ScrollTrigger;
+      gsap.registerPlugin(scrollTrigger);
 
       context = gsap.context(() => {
-        gsap.utils.toArray("[data-reveal]").forEach((element) => {
+        gsap.utils.toArray("[data-resolve]").forEach((element) => {
           gsap.fromTo(
             element,
-            { autoAlpha: 0, y: 24 },
+            { autoAlpha: 0, y: 44, filter: "blur(16px)", scale: 0.985 },
             {
               autoAlpha: 1,
               y: 0,
-              duration: 0.68,
+              filter: "blur(0px)",
+              scale: 1,
+              duration: 0.95,
               ease: "power3.out",
               scrollTrigger: {
                 trigger: element,
-                start: "top 90%",
+                start: "top 84%",
                 once: true,
               },
             },
@@ -155,21 +128,54 @@ export default function NRVSite() {
     };
 
     setup();
+
     return () => {
       disposed = true;
       context?.revert();
     };
   }, [reducedMotion]);
 
+  useEffect(() => {
+    const cursor = cursorRef.current;
+    const finePointer = window.matchMedia("(pointer: fine)").matches;
+    if (!cursor || !finePointer || reducedMotion) return undefined;
+
+    const moveX = gsap.quickTo(cursor, "x", { duration: 0.55, ease: "power3.out" });
+    const moveY = gsap.quickTo(cursor, "y", { duration: 0.55, ease: "power3.out" });
+    const show = () => gsap.to(cursor, { opacity: 0.32, duration: 0.25 });
+    const hide = () => gsap.to(cursor, { opacity: 0, duration: 0.35 });
+    const move = (event) => {
+      moveX(event.clientX);
+      moveY(event.clientY);
+    };
+
+    window.addEventListener("pointermove", move, { passive: true });
+    document.documentElement.addEventListener("mouseenter", show);
+    document.documentElement.addEventListener("mouseleave", hide);
+
+    return () => {
+      window.removeEventListener("pointermove", move);
+      document.documentElement.removeEventListener("mouseenter", show);
+      document.documentElement.removeEventListener("mouseleave", hide);
+    };
+  }, [reducedMotion]);
+
+  const currentWord = useMemo(() => BUILD_WORDS[wordIndex], [wordIndex]);
+
   return (
     <main ref={rootRef} id="top" className="site-shell">
       <a className="skip-link" href="#main-content">Skip to content</a>
+      <div ref={cursorRef} className="ink-cursor" aria-hidden="true" />
 
       <PillNav
         logo="/nrv-mark.svg"
-        logoAlt="NRV"
+        logoAlt="NRV home"
         items={NAV_ITEMS}
         activeHref={activeHref}
+        baseColor="#16241F"
+        pillColor="#CBAB70"
+        pillTextColor="#16241F"
+        hoveredPillTextColor="#F4EAD9"
         initialLoadAnimation={!reducedMotion}
       />
 
@@ -177,86 +183,99 @@ export default function NRVSite() {
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-cubes" aria-hidden="true">
             <Cubes
-              gridSize={isCompact ? 5 : 8}
-              maxAngle={isCompact ? 24 : 32}
-              radius={isCompact ? 1.75 : 2.35}
-              duration={{ enter: 0.24, leave: 0.64 }}
-              easing="power2.out"
-              cellGap={isCompact ? 6 : 10}
-              faceColor="#C5A368"
-              borderStyle="1px solid rgba(22,36,31,0.58)"
-              rippleOnClick={false}
+              gridSize={isMobile ? 6 : 10}
+              maxAngle={35}
+              radius={3}
+              faceColor="#CBAB70"
+              borderStyle="1px solid rgba(43,107,109,0.4)"
+              rippleColor="#2B6B6D"
+              rippleOnClick
               autoAnimate={!reducedMotion}
             />
           </div>
-          <div className="hero-veil" aria-hidden="true" />
 
+          <div className="hero-wash" aria-hidden="true" />
           <div className="hero-layout">
-            <div className="hero-copy" data-reveal>
+            <div className="hero-panel" data-resolve>
+              <p className="eyebrow">
+                <span className="eyebrow-dot" />
+                Independent software studio
+              </p>
               <h1 id="hero-title">
-                Software built around
-                <span>the way you work.</span>
+                We build
+                <span className="hero-word-wrap" aria-live="polite">
+                  <span key={currentWord} className="hero-word">{currentWord}</span>
+                </span>
+                <span className="hero-title-tail">that hold up.</span>
               </h1>
               <p className="hero-subhead">
-                NRV designs and builds custom software for teams whose work has outgrown generic tools.
+                NRV turns rough briefs into thoughtful, working software — shaped with care, shipped with conviction.
               </p>
               <div className="hero-actions">
-                <a className="button button--rust" href="#contact">Start a project</a>
+                <a className="button button--rust" href="#work">See our work <span aria-hidden="true">↘</span></a>
+                <a className="button button--ghost" href="#contact">Talk to us <span aria-hidden="true">→</span></a>
               </div>
+            </div>
+
+            <div className="hero-note" data-resolve>
+              <span className="hero-note-mark" aria-hidden="true">✦</span>
+              <span>Touch, tilt, or click the grid</span>
+            </div>
+          </div>
+
+          <div className="hero-footerline" aria-hidden="true">
+            <span>Ideas in</span>
+            <span className="hero-footerline-rule" />
+            <span>Working software out</span>
+          </div>
+        </section>
+
+        <section id="services" className="section section--ink build-section" aria-labelledby="build-title">
+          <div className="section-inner">
+            <div className="section-heading section-heading--light" data-resolve>
+              <SectionIndex>01</SectionIndex>
+              <div>
+                <p className="eyebrow eyebrow--light">What we build</p>
+                <h2 id="build-title">Software, finished properly.</h2>
+              </div>
+              <p className="section-intro">
+                From a first sketch to the stubborn final detail, we make digital products that feel clear, useful, and distinctly yours.
+              </p>
+            </div>
+
+            <div id="products" className="anchor-target" data-resolve>
+              <MagicBento
+                glowColor="43, 107, 109"
+                enableTilt
+                enableMagnetism
+                clickEffect
+                enableSpotlight
+                enableBorderGlow
+                enableStars
+                disableAnimations={reducedMotion}
+              />
             </div>
           </div>
         </section>
 
-        <section id="about" className="studio-statement" aria-labelledby="studio-title">
-          <div className="section-inner studio-statement__grid" data-reveal>
-            <h2 id="studio-title">
-              We get close to the work, <span>find what matters, and build around it.</span>
-            </h2>
-            <p className="studio-statement__body">
-              NRV is a small software studio. We design and build products around the way a team actually works.
-            </p>
-          </div>
-        </section>
-
-        <section id="services" className="section capabilities-section" aria-labelledby="services-title">
+        <section className="section section--paper craft-section" aria-labelledby="precision-title">
           <div className="section-inner">
-            <header className="section-heading" data-reveal>
-              <h2 id="services-title">What we build.</h2>
-              <p>
-                Custom products and operational systems that become a clear, useful part of the day.
-              </p>
-            </header>
-
-            <ol className="capability-list">
-              {SERVICES.map((service) => (
-                <li key={service.number} data-reveal>
-                  <span className="list-number">{service.number}</span>
-                  <h3>{service.title}</h3>
-                  <p>{service.description}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-
-        <section className="section precision-section" aria-labelledby="precision-title">
-          <div className="section-inner">
-            <div className="precision-frame" data-reveal>
+            <div className="precision-frame" data-resolve>
               <LetterGlitch
-                glitchColors={GLITCH_COLORS}
-                glitchSpeed={90}
+                glitchColors={["#16241F", "#2B6B6D", "#9FE1CB"]}
+                glitchSpeed={70}
                 centerVignette
                 outerVignette
                 smooth
                 backgroundColor="#16241F"
-                characters={GLITCH_CHARACTERS}
               />
               <div className="precision-copy">
+                <p className="eyebrow eyebrow--light">Under the hood</p>
                 <h2 id="precision-title">Built to be precise.</h2>
                 <p>
-                  We understand the complexity first, then turn it into software that is clear, stable, and usable.
+                  Clean architecture, careful testing, and decisions that survive the real world. The quiet work matters most.
                 </p>
-                <div className="precision-principles" aria-label="Engineering principles">
+                <div className="precision-points" aria-label="Engineering principles">
                   <span>Clear systems</span>
                   <span>Measured performance</span>
                   <span>Maintainable by design</span>
@@ -264,72 +283,107 @@ export default function NRVSite() {
               </div>
             </div>
 
-            <div className="technology" data-reveal>
-              <div>
-                <h2>Tools are choices, not trophies.</h2>
-                <p>
-                  We choose the technology that best fits the product, team, and constraints.
-                </p>
+            <div className="stack-section" data-resolve>
+              <div className="stack-heading">
+                <p className="eyebrow">A flexible stack, chosen on purpose</p>
+                <span>Tools follow the problem — never the other way around.</span>
               </div>
-              <p className="technology-list" aria-label="Technology stack">
-                TypeScript <span>·</span> React <span>·</span> Next.js <span>·</span> Node <span>·</span> Postgres <span>·</span> Cloudflare <span>·</span> Figma
+              <LogoLoop
+                logos={STACK}
+                speed={80}
+                hoverSpeed={20}
+                logoHeight={34}
+                gap={52}
+                fadeOut
+                fadeOutColor="#CBAB70"
+                scaleOnHover
+                ariaLabel="Technology stack"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section id="work" className="section section--paper work-section" aria-labelledby="work-title">
+          <div className="section-inner">
+            <div className="section-heading" data-resolve>
+              <SectionIndex>02</SectionIndex>
+              <div>
+                <p className="eyebrow">Selected work</p>
+                <h2 id="work-title">Made for the messy middle.</h2>
+              </div>
+              <p className="section-intro">
+                The best software disappears into the work: fewer handoffs, clearer decisions, calmer days.
               </p>
             </div>
-          </div>
-        </section>
 
-        <section id="process" className="section process-section" aria-labelledby="process-title">
-          <div className="section-inner">
-            <header className="process-heading" data-reveal>
-              <h2 id="process-title">How we work.</h2>
-              <p>A direct path from a real problem to software that can keep evolving.</p>
-            </header>
-            <ol className="process-list">
-              {PROCESS.map((step) => (
-                <li key={step.number} data-reveal>
-                  <span className="list-number">{step.number}</span>
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-      </div>
+            <div className="work-grid">
+              <article className="project-card project-card--bayflow" data-resolve>
+                <div className="project-card-topline">
+                  <span>Selected practice</span>
+                  <span>Operational systems</span>
+                </div>
+                <div className="bayflow-visual" aria-hidden="true">
+                  <div className="bayflow-sidebar">
+                    <span className="bayflow-logo">B</span>
+                    <i /><i /><i /><i />
+                  </div>
+                  <div className="bayflow-screen">
+                    <div className="bayflow-screen-head"><b /><span /></div>
+                    <div className="bayflow-metrics"><i /><i /><i /></div>
+                    <div className="bayflow-lines"><i /><i /><i /><i /></div>
+                  </div>
+                </div>
+                <div className="project-card-copy">
+                  <p className="eyebrow eyebrow--light">Workflow software</p>
+                  <h3>Connected operations.</h3>
+                  <p>Purpose-built systems that bring jobs, customers, teams, and decisions into one legible flow.</p>
+                </div>
+              </article>
 
-      <footer id="contact" className="site-footer" aria-labelledby="contact-title">
-        <div className="contact-cta">
-          <div className="cta-geometry" aria-hidden="true">
-            {Array.from({ length: 9 }, (_, index) => <span key={index} />)}
-          </div>
-          <div className="contact-cta__inner">
-            <div data-reveal>
-              <h2 id="contact-title">Bring us the rough sketch.</h2>
-              <p>Tell us what is slow, fragile, unclear, or held together by workarounds.</p>
+              <article className="project-card project-card--custom" data-resolve>
+                <div className="project-card-topline">
+                  <span>Client systems</span>
+                  <span>Designed around the work</span>
+                </div>
+                <div className="system-map" aria-hidden="true">
+                  <span className="system-node system-node--one">Brief</span>
+                  <span className="system-path system-path--one" />
+                  <span className="system-node system-node--two">Build</span>
+                  <span className="system-path system-path--two" />
+                  <span className="system-node system-node--three">Ship</span>
+                  <span className="system-bloom" />
+                </div>
+                <div className="project-card-copy project-card-copy--dark">
+                  <p className="eyebrow">Custom platforms</p>
+                  <h3>Your workflow, made legible.</h3>
+                  <p>Purpose-built portals, tools, and products — without forcing your business into someone else’s template.</p>
+                </div>
+              </article>
             </div>
-            <a className="button button--cream button--large" href="mailto:hello@nrv.studio">
-              Start a conversation
+          </div>
+        </section>
+
+        <section id="contact" className="contact-section" aria-labelledby="contact-title">
+          <div className="contact-ink" aria-hidden="true" />
+          <div className="contact-inner" data-resolve>
+            <p className="eyebrow eyebrow--light">Have something in mind?</p>
+            <h2 id="contact-title">Bring us the rough sketch.</h2>
+            <p>We’ll help turn it into something clear, useful, and ready for the world.</p>
+            <a className="button button--rust button--large" href="mailto:hello@nrv.studio">
+              Start a conversation <span aria-hidden="true">↗</span>
             </a>
           </div>
-        </div>
 
-        <div className="footer-main">
-          <a className="footer-wordmark" href="#top" aria-label="NRV — back to top">NRV</a>
-          <div className="footer-links">
-            <a className="footer-email" href="mailto:hello@nrv.studio">hello@nrv.studio</a>
-            <nav aria-label="Footer navigation">
-              <a href="#services">Services</a>
-              <a href="#about">About</a>
-              <a href="#process">Process</a>
-              <a href="https://github.com/dion-nikila/NRV" target="_blank" rel="noreferrer">GitHub</a>
-            </nav>
-          </div>
-          <div className="footer-bottom">
-            <span>© {new Date().getFullYear()} NRV</span>
-            <span>Independent software studio</span>
-          </div>
-        </div>
-      </footer>
+          <footer className="site-footer">
+            <a className="footer-wordmark" href="#top" aria-label="Back to top">NRV</a>
+            <div className="footer-details">
+              <a href="mailto:hello@nrv.studio">hello@nrv.studio</a>
+              <span>Small studio. Serious build quality.</span>
+            </div>
+            <a className="back-to-top" href="#top">Back to top ↑</a>
+          </footer>
+        </section>
+      </div>
     </main>
   );
 }
