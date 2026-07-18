@@ -151,9 +151,7 @@ a {
 
 .hero h1,
 .section h2,
-.contact-section h2,
-.studio-bridge h2,
-.approach-list h3 {
+.contact-section h2 {
   margin: 0;
   font-family: var(--font-display);
   font-weight: 600;
@@ -285,8 +283,7 @@ a {
 
 .section-inner,
 .contact-inner,
-.footer-inner,
-.studio-bridge__inner {
+.footer-inner {
   position: relative;
   z-index: 1;
   width: var(--content);
@@ -322,101 +319,6 @@ a {
 .section-kicker--light,
 .eyebrow--light {
   color: var(--teal-light);
-}
-
-/* Editorial bridge */
-
-.studio-bridge {
-  padding: clamp(88px, 9vw, 132px) 0;
-  border-top: 1px solid rgba(22, 36, 31, 0.16);
-  background: var(--paper);
-}
-
-.studio-bridge__inner {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.55fr);
-  gap: clamp(50px, 8vw, 126px);
-  align-items: end;
-}
-
-.studio-bridge h2 {
-  max-width: 12ch;
-  font-size: clamp(3.4rem, 5.7vw, 6rem);
-  line-height: 0.94;
-}
-
-.studio-bridge p {
-  max-width: 42ch;
-  margin: 0 0 5px;
-  color: var(--ink-secondary);
-  font-size: clamp(1rem, 1.3vw, 1.16rem);
-}
-
-/* Services */
-
-.services-section {
-  border-radius: 0 0 64px 64px;
-}
-
-.services-heading {
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(320px, 0.58fr);
-  gap: clamp(54px, 9vw, 138px);
-  align-items: end;
-  margin-bottom: clamp(64px, 7vw, 94px);
-}
-
-.services-heading h2 {
-  max-width: 10ch;
-  font-size: clamp(4rem, 6.7vw, 7.1rem);
-  line-height: 0.89;
-}
-
-.services-intro p {
-  max-width: 43ch;
-  margin: 0;
-  color: rgba(244, 234, 217, 0.7);
-  font-size: 1rem;
-}
-
-.services-intro p:first-child {
-  margin-bottom: 19px;
-  color: var(--cream);
-  font-family: var(--font-display);
-  font-size: clamp(1.45rem, 2.1vw, 2.1rem);
-  letter-spacing: -0.025em;
-  line-height: 1.18;
-}
-
-.services-promise {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 40px;
-  margin-top: 58px;
-  padding-top: 29px;
-  border-top: 1px solid var(--hairline-light);
-}
-
-.services-promise p {
-  max-width: 42ch;
-  margin: 0;
-  color: rgba(244, 234, 217, 0.72);
-  font-family: var(--font-display);
-  font-size: clamp(1.35rem, 2vw, 2rem);
-  letter-spacing: -0.025em;
-  line-height: 1.2;
-}
-
-.services-promise a {
-  flex: none;
-  color: var(--teal-light);
-  font-size: 0.83rem;
-  font-weight: 500;
-}
-
-.services-promise a span {
-  margin-left: 13px;
 }
 
 /* Precision — preserved from the original design. */
@@ -529,76 +431,138 @@ a {
   white-space: nowrap;
 }
 
-/* Approach */
+/* Capabilities */
 
-.approach-section {
+.capabilities-section {
+  position: relative;
   overflow: clip;
-  border-top: 1px solid rgba(22, 36, 31, 0.13);
-  background: var(--cream);
+  border-radius: 0 0 58px 58px;
 }
 
-.approach-heading {
+.capabilities-section::after {
+  position: absolute;
+  top: -280px;
+  right: -250px;
+  width: 620px;
+  height: 620px;
+  border: 1px solid rgba(159, 225, 203, 0.11);
+  border-radius: 50%;
+  content: "";
+}
+
+.capabilities-heading {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.55fr);
-  gap: 24px clamp(50px, 9vw, 136px);
+  grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.5fr);
+  gap: 24px clamp(54px, 9vw, 140px);
   align-items: end;
-  margin-bottom: clamp(66px, 8vw, 104px);
+  margin-bottom: clamp(64px, 8vw, 104px);
 }
 
-.approach-heading .section-kicker {
+.capabilities-heading .section-kicker {
   grid-column: 1 / -1;
 }
 
-.approach-heading h2 {
-  max-width: 12ch;
-  font-size: clamp(3.6rem, 6vw, 6.4rem);
-  line-height: 0.92;
+.capabilities-heading h2 {
+  max-width: 10ch;
+  font-size: clamp(4rem, 6.7vw, 7.2rem);
+  line-height: 0.88;
 }
 
-.approach-heading > p:last-child {
-  max-width: 42ch;
+.capabilities-heading > p:last-child {
+  max-width: 34ch;
   margin: 0 0 6px;
-  color: var(--ink-secondary);
-  font-size: 1.04rem;
+  color: rgba(244, 234, 217, 0.64);
+  font-size: 1rem;
 }
 
-.approach-list {
+.capabilities-interface {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-top: 1px solid var(--hairline-dark);
-  border-bottom: 1px solid var(--hairline-dark);
+  grid-template-columns: minmax(310px, 0.72fr) minmax(0, 1.28fr);
+  border-top: 1px solid var(--hairline-light);
+  border-bottom: 1px solid var(--hairline-light);
 }
 
-.approach-list article {
-  min-height: 330px;
-  padding: 29px clamp(24px, 3vw, 42px) 35px 0;
+.capabilities-interface .line-sidebar {
+  align-self: center;
+  padding-top: clamp(56px, 7vw, 86px);
+  padding-bottom: clamp(56px, 7vw, 86px);
 }
 
-.approach-list article + article {
-  padding-left: clamp(24px, 3vw, 42px);
-  border-left: 1px solid var(--hairline-dark);
+.capability-detail {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 520px;
+  padding: clamp(52px, 7vw, 90px);
+  border-left: 1px solid var(--hairline-light);
 }
 
-.approach-list article > span {
-  color: var(--teal);
+.capability-detail__signal {
+  position: absolute;
+  top: clamp(42px, 5vw, 66px);
+  left: clamp(52px, 7vw, 90px);
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--rust);
+  transform: rotate(45deg);
+}
+
+.capability-detail h3 {
+  margin: 0 0 25px;
+  color: var(--teal-light);
   font-size: 0.67rem;
   font-weight: 500;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
 
-.approach-list h3 {
-  max-width: 12ch;
-  margin-top: 57px;
-  font-size: clamp(2.1rem, 3.2vw, 3.5rem);
+.capability-description {
+  max-width: 16ch;
+  color: var(--cream);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.1vw, 4.8rem);
+  font-weight: 600;
+  letter-spacing: -0.042em;
   line-height: 0.98;
+  text-wrap: balance;
 }
 
-.approach-list p {
-  max-width: 34ch;
-  margin: 21px 0 0;
+.capability-scope {
+  margin: 35px 0 0;
+  color: rgba(244, 234, 217, 0.5);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+}
+
+/* Process */
+
+.process-section {
+  overflow: clip;
+  background:
+    radial-gradient(circle at 90% 8%, rgba(203, 171, 112, 0.58), transparent 30%),
+    var(--cream);
+}
+
+.process-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.5fr);
+  gap: clamp(54px, 9vw, 140px);
+  align-items: end;
+  margin-bottom: clamp(62px, 7vw, 90px);
+}
+
+.process-heading h2 {
+  max-width: 12ch;
+  font-size: clamp(3.8rem, 6.2vw, 6.7rem);
+  line-height: 0.9;
+}
+
+.process-heading > p {
+  max-width: 39ch;
+  margin: 0 0 6px;
   color: var(--ink-secondary);
-  font-size: 0.93rem;
+  font-size: 1rem;
 }
 
 /* Contact and footer */
@@ -743,19 +707,14 @@ button:focus-visible {
     width: var(--content);
   }
 
-  .studio-bridge__inner,
-  .services-heading,
-  .approach-heading,
+  .capabilities-heading,
+  .process-heading,
   .contact-inner {
     gap: 48px;
   }
 
-  .services-heading {
-    grid-template-columns: minmax(0, 1fr) minmax(280px, 0.62fr);
-  }
-
-  .approach-list h3 {
-    font-size: 2.45rem;
+  .capability-description {
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
   }
 }
 
@@ -835,56 +794,11 @@ button:focus-visible {
     font-size: 0.63rem;
   }
 
-  .studio-bridge {
-    padding: 74px 0 80px;
-  }
-
-  .studio-bridge__inner,
-  .services-heading,
-  .approach-heading,
+  .capabilities-heading,
+  .process-heading,
   .contact-inner {
     grid-template-columns: 1fr;
     gap: 25px;
-  }
-
-  .studio-bridge h2 {
-    font-size: clamp(2.9rem, 12vw, 4rem);
-  }
-
-  .studio-bridge p {
-    font-size: 0.96rem;
-  }
-
-  .services-section {
-    border-radius: 0 0 34px 34px;
-  }
-
-  .services-heading {
-    margin-bottom: 51px;
-  }
-
-  .services-heading h2 {
-    font-size: clamp(3.2rem, 13.5vw, 4.65rem);
-  }
-
-  .services-intro p:first-child {
-    margin-bottom: 15px;
-    font-size: 1.45rem;
-  }
-
-  .services-intro p:last-child {
-    font-size: 0.92rem;
-  }
-
-  .services-promise {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 23px;
-    margin-top: 42px;
-  }
-
-  .services-promise p {
-    font-size: 1.35rem;
   }
 
   .precision-frame {
@@ -930,44 +844,58 @@ button:focus-visible {
     font-size: 0.76rem;
   }
 
-  .approach-heading {
+  .capabilities-section {
+    border-radius: 0 0 34px 34px;
+  }
+
+  .capabilities-heading,
+  .process-heading {
     margin-bottom: 51px;
   }
 
-  .approach-heading .section-kicker {
+  .capabilities-heading .section-kicker {
     grid-column: auto;
   }
 
-  .approach-heading h2 {
-    font-size: clamp(3rem, 12.7vw, 4.3rem);
+  .capabilities-heading h2,
+  .process-heading h2 {
+    font-size: clamp(3.1rem, 13.2vw, 4.45rem);
   }
 
-  .approach-heading > p:last-child {
+  .capabilities-heading > p:last-child,
+  .process-heading > p {
     font-size: 0.96rem;
   }
 
-  .approach-list {
+  .capabilities-interface {
     grid-template-columns: 1fr;
-    border-bottom: 0;
   }
 
-  .approach-list article,
-  .approach-list article + article {
-    min-height: 0;
-    padding: 28px 0 34px;
-    border-right: 0;
-    border-bottom: 1px solid var(--hairline-dark);
+  .capabilities-interface .line-sidebar {
+    padding-top: 39px;
+    padding-bottom: 41px;
+  }
+
+  .capability-detail {
+    min-height: 450px;
+    padding: 72px 0 43px;
+    border-top: 1px solid var(--hairline-light);
     border-left: 0;
   }
 
-  .approach-list h3 {
-    margin-top: 27px;
-    font-size: clamp(2.25rem, 10vw, 3rem);
+  .capability-detail__signal {
+    top: 36px;
+    left: 0;
   }
 
-  .approach-list p {
-    margin-top: 15px;
-    font-size: 0.92rem;
+  .capability-description {
+    max-width: 18ch;
+    font-size: clamp(2.25rem, 10.5vw, 3.25rem);
+  }
+
+  .capability-scope {
+    margin-top: 28px;
+    font-size: 0.68rem;
   }
 
   .contact-section {

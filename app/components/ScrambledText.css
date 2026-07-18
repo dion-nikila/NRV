@@ -1,0 +1,23 @@
+.scrambled-text {
+  max-width: 820px;
+}
+
+.scrambled-text p {
+  margin: 0;
+}
+
+.scrambled-char {
+  display: inline-block;
+  will-change: contents;
+}
+
+.scrambled-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+@media (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .scrambled-char {
+    will-change: auto;
+  }
+}

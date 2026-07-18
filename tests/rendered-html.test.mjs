@@ -33,14 +33,17 @@ test("server-renders the NRV studio site", async () => {
   const html = await response.text();
   assert.match(html, /<title>NRV — Software, resolved<\/title>/i);
   assert.match(html, /We build/i);
-  assert.match(html, /Software should fit the work/i);
-  assert.match(html, /Software, finished properly\./i);
   assert.match(html, /Built to be precise\./i);
-  assert.match(html, /Close to the work\. Clear about what matters\./i);
+  assert.match(html, /A flexible stack, chosen on purpose/i);
+  assert.match(html, /Software shaped around the work\./i);
+  assert.match(html, /Operational platforms/i);
+  assert.match(html, /One path from friction to finished\./i);
+  assert.match(html, /Find the friction/i);
   assert.match(html, /Bring us the rough sketch\./i);
   assert.match(html, /hello@nrv\.studio/i);
   assert.match(html, /\/og-v2\.png/i);
-  assert.doesNotMatch(html, /Independent software studio|Made for the messy middle|class="section-index"|href="#work"/i);
+  assert.ok(html.indexOf("Built to be precise.") > html.indexOf("We build"));
+  assert.doesNotMatch(html, /Independent software studio|Made for the messy middle|Software should fit the work|Software, finished properly|Close to the work|class="section-index"|href="#work"/i);
   assert.doesNotMatch(html, /codex-preview|Building your site|react-loading-skeleton/i);
 });
 
@@ -63,15 +66,18 @@ test("keeps the finished brand system and component suite wired", async () => {
 
   for (const component of [
     "Cubes",
+    "Carousel",
     "LetterGlitch",
+    "LineSidebar",
     "LogoLoop",
-    "MagicBento",
     "PillNav",
+    "ScrambledText",
   ]) {
     assert.match(site, new RegExp(`import ${component} from`));
   }
 
   assert.match(packageJson, /"gsap":/);
+  assert.match(packageJson, /"motion":/);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
 
   await Promise.all([

@@ -3,10 +3,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Cubes from "./Cubes";
+import Carousel from "./Carousel";
 import LetterGlitch from "./LetterGlitch";
+import LineSidebar from "./LineSidebar";
 import LogoLoop from "./LogoLoop";
-import MagicBento from "./MagicBento";
 import PillNav from "./PillNav";
+import ScrambledText from "./ScrambledText";
 
 const BUILD_WORDS = [
   "web platforms",
@@ -16,13 +18,13 @@ const BUILD_WORDS = [
 ];
 
 const NAV_ITEMS = [
-  { label: "Services", href: "#services" },
   { label: "Craft", href: "#precision" },
-  { label: "Approach", href: "#approach" },
+  { label: "Capabilities", href: "#capabilities" },
+  { label: "Process", href: "#process" },
   { label: "Contact", href: "#contact" },
 ];
 
-const ACTIVE_SECTIONS = ["services", "precision", "approach", "contact"];
+const ACTIVE_SECTIONS = ["precision", "capabilities", "process", "contact"];
 
 const STACK = [
   { node: <span className="stack-mark">Next.js</span>, title: "Next.js" },
@@ -35,24 +37,65 @@ const STACK = [
   { node: <span className="stack-mark">GSAP</span>, title: "GSAP" },
 ];
 
-const APPROACH = [
+const CAPABILITIES = [
   {
-    label: "Understand",
-    title: "Start with the real work.",
+    title: "Operational platforms",
     description:
-      "We learn the people, handoffs, constraints, and exceptions before deciding what the product should be.",
+      "Replace scattered handoffs with one clear system built around how the team actually works.",
+    scope: "Workflows · permissions · reporting",
   },
   {
-    label: "Resolve",
-    title: "Make the complex part clear.",
+    title: "Customer-facing products",
     description:
-      "We turn the essential decisions into one coherent system, without sanding away what makes the work specific.",
+      "Turn a useful idea into a fast, dependable product customers understand and your team can evolve.",
+    scope: "Journeys · integrations · design systems",
   },
   {
-    label: "Build",
-    title: "Ship something built to last.",
+    title: "Mobile tools",
     description:
-      "We design, engineer, test, and refine the product as one team—then leave it straightforward to evolve.",
+      "Focused apps for work that needs to move beautifully beyond the desk.",
+    scope: "iOS + Android · offline states · notifications",
+  },
+  {
+    title: "Product care",
+    description:
+      "Clarify, harden, and steadily improve software that already matters.",
+    scope: "Research · prototyping · ongoing stewardship",
+  },
+];
+
+const PROCESS = [
+  {
+    id: "friction",
+    meta: "Listen",
+    title: "Find the friction",
+    description:
+      "We get close to the real workflow, the people inside it, and the moments where the current system starts to bend.",
+    icon: <span className="process-glyph process-glyph--friction" />,
+  },
+  {
+    id: "shape",
+    meta: "Resolve",
+    title: "Shape the system",
+    description:
+      "We turn the essential decisions into one coherent product direction before complexity has a chance to spread.",
+    icon: <span className="process-glyph process-glyph--shape" />,
+  },
+  {
+    id: "build",
+    meta: "Make",
+    title: "Build with care",
+    description:
+      "Product thinking, interface design, engineering, and testing move together as one focused build—not a chain of handoffs.",
+    icon: <span className="process-glyph process-glyph--build" />,
+  },
+  {
+    id: "refine",
+    meta: "Finish",
+    title: "Refine the finish",
+    description:
+      "We launch, measure, and keep polishing the details that turn working software into software people trust.",
+    icon: <span className="process-glyph process-glyph--refine" />,
   },
 ];
 
@@ -62,6 +105,7 @@ export default function NRVSite() {
   const [isMobile, setIsMobile] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [activeHref, setActiveHref] = useState("");
+  const [activeCapability, setActiveCapability] = useState(0);
 
   useEffect(() => {
     const viewportQuery = window.matchMedia("(max-width: 768px)");
@@ -194,46 +238,6 @@ export default function NRVSite() {
           </div>
         </section>
 
-        <section className="studio-bridge" aria-labelledby="studio-bridge-title">
-          <div className="studio-bridge__inner" data-resolve>
-            <h2 id="studio-bridge-title">Software should fit the work. Not the other way around.</h2>
-            <p>We get close to the process, learn where it breaks, and build around what people actually need.</p>
-          </div>
-        </section>
-
-        <section id="services" className="section section--ink services-section" aria-labelledby="services-title">
-          <div className="section-inner">
-            <header className="services-heading" data-resolve>
-              <div>
-                <p className="section-kicker section-kicker--light">What we build</p>
-                <h2 id="services-title">Software, finished properly.</h2>
-              </div>
-              <div className="services-intro">
-                <p>Good software should make demanding work feel direct, dependable, and easier to move through.</p>
-                <p>We bring product thinking, design, and engineering into one focused build—then stay close enough to make the final details count.</p>
-              </div>
-            </header>
-
-            <div data-resolve>
-              <MagicBento
-                glowColor="43, 107, 109"
-                enableTilt={false}
-                enableMagnetism={false}
-                clickEffect={false}
-                enableSpotlight={false}
-                enableBorderGlow={false}
-                enableStars={false}
-                disableAnimations={reducedMotion}
-              />
-            </div>
-
-            <div className="services-promise" data-resolve>
-              <p>One studio from the first useful question to the product people rely on.</p>
-              <a href="#precision">See how we build <span aria-hidden="true">↓</span></a>
-            </div>
-          </div>
-        </section>
-
         <section id="precision" className="section section--paper craft-section" aria-labelledby="precision-title">
           <div className="section-inner">
             <div className="precision-frame" data-resolve>
@@ -279,22 +283,77 @@ export default function NRVSite() {
           </div>
         </section>
 
-        <section id="approach" className="section approach-section" aria-labelledby="approach-title">
+        <section id="capabilities" className="section section--ink capabilities-section" aria-labelledby="capabilities-title">
           <div className="section-inner">
-            <header className="approach-heading" data-resolve>
-              <p className="section-kicker">How we work</p>
-              <h2 id="approach-title">Close to the work. Clear about what matters.</h2>
-              <p>There is one continuous path from understanding the problem to shipping a system that can keep evolving.</p>
+            <header className="capabilities-heading" data-resolve>
+              <p className="section-kicker section-kicker--light">What we build</p>
+              <h2 id="capabilities-title">Software shaped around the work.</h2>
+              <p>Choose the kind of problem. The system around it stays specific to you.</p>
             </header>
 
-            <div className="approach-list">
-              {APPROACH.map((item) => (
-                <article key={item.label} data-resolve>
-                  <span>{item.label}</span>
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </article>
-              ))}
+            <div className="capabilities-interface" data-resolve>
+              <LineSidebar
+                items={CAPABILITIES.map((item) => item.title)}
+                accentColor="#9FE1CB"
+                textColor="rgba(244, 234, 217, 0.58)"
+                markerColor="rgba(244, 234, 217, 0.2)"
+                showIndex={false}
+                showMarker
+                proximityRadius={100}
+                maxShift={18}
+                falloff="smooth"
+                markerLength={52}
+                markerGap={0}
+                tickScale={0.45}
+                scaleTick
+                itemGap={22}
+                fontSize={1.55}
+                smoothing={140}
+                defaultActive={0}
+                onItemClick={(index) => setActiveCapability(index)}
+                ariaLabel="NRV capabilities"
+              />
+
+              <article className="capability-detail" aria-live="polite">
+                <span className="capability-detail__signal" aria-hidden="true" />
+                <h3>{CAPABILITIES[activeCapability].title}</h3>
+                <ScrambledText
+                  key={CAPABILITIES[activeCapability].title}
+                  radius={110}
+                  duration={0.75}
+                  speed={0.35}
+                  scrambleChars=".:/"
+                  disableAnimations={reducedMotion || isMobile}
+                  className="capability-description"
+                >
+                  {CAPABILITIES[activeCapability].description}
+                </ScrambledText>
+                <p className="capability-scope">{CAPABILITIES[activeCapability].scope}</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="process" className="section process-section" aria-labelledby="process-title">
+          <div className="section-inner">
+            <header className="process-heading" data-resolve>
+              <div>
+                <p className="section-kicker">How a build moves</p>
+                <h2 id="process-title">One path from friction to finished.</h2>
+              </div>
+              <p>No relay race between strategy, design, and engineering. The same focused team carries the decisions all the way through.</p>
+            </header>
+
+            <div data-resolve>
+              <Carousel
+                items={PROCESS}
+                baseWidth={1280}
+                autoplay={false}
+                pauseOnHover
+                loop
+                round={false}
+                ariaLabel="NRV build process"
+              />
             </div>
           </div>
         </section>
@@ -325,9 +384,9 @@ export default function NRVSite() {
           <div className="footer-links-row">
             <a className="footer-email" href="mailto:hello@nrv.studio">hello@nrv.studio</a>
             <nav aria-label="Footer navigation">
-              <a href="#services">Services</a>
               <a href="#precision">Craft</a>
-              <a href="#approach">Approach</a>
+              <a href="#capabilities">Capabilities</a>
+              <a href="#process">Process</a>
               <a href="#top">Back to top ↑</a>
             </nav>
           </div>
